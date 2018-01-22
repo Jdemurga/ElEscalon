@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">El Escalon</string>
+    <string name="title_home">Comunidades</string>
+    <string name="title_dashboard">Nuevo</string>
+    <string name="title_notifications">Perfil</string>
+    <string name="title_activity_inicio">inicio</string>
+    <string name="title_activity_ini_comunidad">iniComunidad</string>
+</resources>

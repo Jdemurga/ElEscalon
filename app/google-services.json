@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "634686540850",
+    "firebase_url": "https://elescalon-79fa4.firebaseio.com",
+    "project_id": "elescalon-79fa4",
+    "storage_bucket": "elescalon-79fa4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:634686540850:android:44826d83d6df1bd8",
+        "android_client_info": {
+          "package_name": "com.example.jdemu.elescalon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "634686540850-1t8pk10hns8g33o19l1bfp7fv4u6h7em.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwMUV6N4q5V_hZnzkvToYJr92D67wJZjk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
