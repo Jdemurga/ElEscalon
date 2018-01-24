@@ -103,12 +103,12 @@ public class añadirComunidad extends Fragment {
         final EditText edt2 = (EditText) dialogView.findViewById(R.id.edit2);
 
 
-        dialogBuilder.setTitle("Nuevo contacto");
+        dialogBuilder.setTitle("Nuevo comunidad");
         dialogBuilder.setMessage("Introduzca los datos");
         dialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 if (!(String.valueOf(edt.getText()).equals("") || String.valueOf(edt2.getText()).equals(""))) {
-// usar para la base de datos                    mc.añadirmios(String.valueOf(edt.getText()),String.valueOf(edt2.getText()));
+
                 }
             }
         });

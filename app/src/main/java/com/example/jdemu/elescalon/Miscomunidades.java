@@ -82,7 +82,4 @@ public class Miscomunidades extends Fragment {
 
         return vista;
     }
-    public void añadirmios(String nuevo,String calle){
-        comunidades.add(nuevo);
-    }
 }

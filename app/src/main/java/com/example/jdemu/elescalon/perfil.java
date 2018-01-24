@@ -146,6 +146,7 @@ public class perfil extends Fragment {
                 public void onClick(View v) {
                     otros.clearFocus();
                     calle.clearFocus();
+                    name.clearFocus();
                 }
             });
         }
