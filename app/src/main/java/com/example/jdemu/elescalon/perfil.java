@@ -43,7 +43,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class perfil extends Fragment {
     View vista;
     Spinner edad, comunidad;
-    ImageView ver;
+    ImageView ver,foto;
     TextView contra, correoE;
     EditText otros, name, calle;
     String correo;
@@ -66,6 +66,7 @@ public class perfil extends Fragment {
             otros = (EditText) vista.findViewById(R.id.Potros);
             contra = (TextView) vista.findViewById(R.id.contras);
             cl=(ConstraintLayout)vista.findViewById(R.id.pantallaPerfil);
+            foto=(ImageView)vista.findViewById(R.id.Pfoto);
             b = getArguments();
             correo = b.getString("correo");
             ArrayList<Integer> edades = new ArrayList();
