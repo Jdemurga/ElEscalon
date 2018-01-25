@@ -3,6 +3,7 @@ package com.example.jdemu.elescalon;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -227,4 +228,5 @@ public class perfil extends Fragment {
         Key key = new SecretKeySpec(perfil.KEY.getBytes(),perfil.ALGORITHM);
         return key;
     }
+
 }
