@@ -38,7 +38,8 @@ public class añadirComunidad extends Fragment {
     ImageView cancel;
     ArrayAdapter<String> adapter;
     ArrayList<String> comunidades;
-    Miscomunidades mc = new Miscomunidades();
+    Bundle b;
+    String correo;
 
     @Nullable
     @Override
@@ -52,6 +53,8 @@ public class añadirComunidad extends Fragment {
             fab = (FloatingActionButton) vista.findViewById(R.id.fab);
             txt = (EditText) vista.findViewById(R.id.txtBus2);
             cancel = (ImageView) vista.findViewById(R.id.cancel2);
+            b = getArguments();
+            correo = b.getString("correo");
             comunidades = new ArrayList();
             leerTodasC();
             txt.addTextChangedListener(new TextWatcher() {
@@ -82,6 +85,8 @@ public class añadirComunidad extends Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     String nombre = String.valueOf(lv.getItemAtPosition(position));
 
+                    añadirDialogo(nombre);
+
                 }
             });
             fab.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +114,7 @@ public class añadirComunidad extends Fragment {
         dialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 if (!(String.valueOf(edt.getText()).equals("") || String.valueOf(edt2.getText()).equals(""))) {
-
+                    subirCom(String.valueOf(edt.getText()), String.valueOf(edt.getText()));
                 }
             }
         });
@@ -132,12 +137,12 @@ public class añadirComunidad extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 comunidades.clear();
                 Iterator<DataSnapshot> hijos = dataSnapshot.getChildren().iterator();
-               while (hijos.hasNext()){
-                   DataSnapshot dato=(DataSnapshot) hijos.next();
-                  String h =dato.getKey();
+                while (hijos.hasNext()) {
+                    DataSnapshot dato = (DataSnapshot) hijos.next();
+                    String h = dato.getKey();
 
-                  comunidades.add(h);
-               }
+                    comunidades.add(h);
+                }
                 adapter = new ArrayAdapter(vista.getContext(), android.R.layout.simple_list_item_1, comunidades);
                 lv.setAdapter(adapter);
             }
@@ -147,6 +152,82 @@ public class añadirComunidad extends Fragment {
 
             }
         });
+    }
+
+
+    public void subirCom(String names, String misListas) {
+        final String[] nombres = new String[1];
+        final String nueva = misListas;
+        DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("usuarios").child(correo);
+        dbrf.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                nombres[0] = dataSnapshot.child("comunidades").getValue(String.class);
+                DatabaseReference dbf = FirebaseDatabase.getInstance().getReference().child("usuarios").child(correo);
+                if (!nombres[0].equals("")) {
+                    nombres[0] += ",";
+                }
+                dbf.child("comunidades").setValue(nombres[0] + nueva);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+        DatabaseReference df = FirebaseDatabase.getInstance().getReference().child("comunidades");
+        df.child(names).push();
+        df.child(names).child("Foro").push();
+        df.child(names).child("Participantes").push();
+        df.child(names).child("Participantes").child(correo).push();
+        df.child(names).child("Participantes").child(correo).child("valoracion").push();
+        df.child(names).child("Participantes").child(correo).child("numValor").push();
+        df.child(names).child("Participantes").child(correo).child("valoracion").setValue(0);
+        df.child(names).child("Participantes").child(correo).child("numValor").setValue(0);
+    }
+
+    public void añadirAMIs(String name) {
+        final String[] nombres = new String[1];
+        final String nueva = name;
+        DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("usuarios").child(correo);
+        dbrf.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                nombres[0] = dataSnapshot.child("comunidades").getValue(String.class);
+                DatabaseReference dbf = FirebaseDatabase.getInstance().getReference().child("usuarios").child(correo);
+                if (!nombres[0].equals("")) {
+                    nombres[0] += ",";
+                }
+                dbf.child("comunidades").setValue(nombres[0] + nueva);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    public void añadirDialogo(final String comunidad) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setTitle("Añadir comunidad")
+                .setMessage("Desea añadir la comunidad "+comunidad+" a su lista")
+                .setPositiveButton("ACEPTAR",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                añadirAMIs(comunidad);
+                            }
+                        })
+                .setNegativeButton("CANCELAR",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+
+        builder.create().show();
     }
 
 }

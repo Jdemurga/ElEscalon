@@ -236,7 +236,6 @@ public class perfil extends Fragment {
 
     private static final String ALGORITHM = "AES";
     private static final String KEY = "1Hbfh667adfDEJ78";
-
     public static String desencriptar(String value) throws Exception {
         Key key = generateKey();
         Cipher cipher = Cipher.getInstance(perfil.ALGORITHM);
@@ -245,14 +244,11 @@ public class perfil extends Fragment {
         byte[] decryptedByteValue = cipher.doFinal(decryptedValue64);
         String decryptedValue = new String(decryptedByteValue, "utf-8");
         return decryptedValue;
-
     }
-
     private static Key generateKey() throws Exception {
         Key key = new SecretKeySpec(perfil.KEY.getBytes(), perfil.ALGORITHM);
         return key;
     }
-
     public void createSingleListDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final CharSequence[] items = new CharSequence[2];
