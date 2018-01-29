@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -39,6 +40,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.security.Key;
@@ -62,6 +64,7 @@ public class perfil extends Fragment {
     String correo;
     Bundle b;
     ConstraintLayout cl;
+    ArrayList<String> comunidades;
 
     @Nullable
     @Override
@@ -82,7 +85,6 @@ public class perfil extends Fragment {
             cl = (ConstraintLayout) vista.findViewById(R.id.pantallaPerfil);
             foto = (ImageView) vista.findViewById(R.id.Pfoto);
             b = getArguments();
-
             correo = b.getString("correo");
             ArrayList<Integer> edades = new ArrayList();
             for (int i = 0; i < 85; i++) {
@@ -91,13 +93,8 @@ public class perfil extends Fragment {
             }
             ArrayAdapter arrayAdapter = new ArrayAdapter(vista.getContext(), android.R.layout.simple_list_item_1, edades);
             edad.setAdapter(arrayAdapter);
-            ArrayList<String> comunidades = new ArrayList();
-            for (int i = 0; i < 5; i++) {
-                int numero = i + 1;
-                comunidades.add("Comunidad " + numero);
-            }
-            ArrayAdapter adapter = new ArrayAdapter(vista.getContext(), android.R.layout.simple_list_item_1, comunidades);
-            comunidad.setAdapter(adapter);
+            comunidades = new ArrayList();
+            leerComn();
             ver.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -266,8 +263,8 @@ public class perfil extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
-                            //  Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            //startActivityForResult(intent, 1);
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(intent, 2);
                         } else {
                             Intent i = new Intent(Intent.ACTION_PICK);
                             i.setType("image/*");
@@ -278,7 +275,8 @@ public class perfil extends Fragment {
 
         builder.create().show();
     }
-    public void cargarFoto(){
+
+    public void cargarFoto() {
         try {
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageRef = storage.getReferenceFromUrl("gs://elescalon-79fa4.appspot.com").child("images").child(correo);
@@ -295,17 +293,18 @@ public class perfil extends Fragment {
                 public void onFailure(@NonNull Exception exception) {
                 }
             });
-        } catch (IOException e ) {}
+        } catch (IOException e) {
+        }
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Toast.makeText(vista.getContext(), "Su foto esta cargando, espere por favor", Toast.LENGTH_SHORT).show();
-        if(requestCode==1 && resultCode==RESULT_OK){
-            final Uri uri=data.getData();
-            StorageReference almacen= FirebaseStorage.getInstance().getReference();
-            StorageReference img=almacen.child("images").child(correo);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            final Uri uri = data.getData();
+            StorageReference almacen = FirebaseStorage.getInstance().getReference();
+            StorageReference img = almacen.child("images").child(correo);
             img.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -319,6 +318,55 @@ public class perfil extends Fragment {
 
                 }
             });
+        } else if (requestCode == 2) {
+            Bundle extras = data.getExtras();
+            final Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            byte[] imageData = stream.toByteArray();
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReference();
+            StorageReference imageRef = storageRef.child("images").child(correo);
+            UploadTask uploadTask = imageRef.putBytes(imageData);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(vista.getContext(), "No se ha subido", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(vista.getContext(), "Se ha subido", Toast.LENGTH_SHORT).show();
+                    foto.setImageBitmap(imageBitmap);
+                }
+            });
+
         }
     }
+
+    public void leerComn() {
+        final String[] nombres = new String[1];
+
+        DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("usuarios").child(correo);
+
+        dbrf.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                comunidades.clear();
+                nombres[0] = dataSnapshot.child("comunidades").getValue(String.class);
+                String[] com = nombres[0].split(",");
+                for (int i = 0; i < com.length; i++) {
+                    comunidades.add(com[i]);
+                }
+                ArrayAdapter adapter = new ArrayAdapter(vista.getContext(), android.R.layout.simple_list_item_1, comunidades);
+                comunidad.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 }
+

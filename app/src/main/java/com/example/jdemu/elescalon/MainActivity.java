@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                     fdb.child("usuarios").child(guardado).child("edad").push();
                     fdb.child("usuarios").child(guardado).child("calle").push();
                     fdb.child("usuarios").child(guardado).child("otros").push();
+                    fdb.child("usuarios").child(guardado).child("comunidades").push();
                     fdb.child("usuarios").child(guardado).child("nombre").setValue(user.getNombre());
                     try {
                         fdb.child("usuarios").child(guardado).child("contraseña").setValue(encriptar(user.getContraseña()));

@@ -17,7 +17,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by jdemu on 16/01/2018.
@@ -31,7 +38,7 @@ public class añadirComunidad extends Fragment {
     ImageView cancel;
     ArrayAdapter<String> adapter;
     ArrayList<String> comunidades;
-    Miscomunidades mc= new Miscomunidades();
+    Miscomunidades mc = new Miscomunidades();
 
     @Nullable
     @Override
@@ -46,13 +53,7 @@ public class añadirComunidad extends Fragment {
             txt = (EditText) vista.findViewById(R.id.txtBus2);
             cancel = (ImageView) vista.findViewById(R.id.cancel2);
             comunidades = new ArrayList();
-            for (int i = 0; i < 15; i++) {
-                int numero = i + 1;
-                comunidades.add("Comunidad " + numero);
-                comunidades.add("Vecindario " + numero);
-            }
-            adapter = new ArrayAdapter(vista.getContext(), android.R.layout.simple_list_item_1, comunidades);
-            lv.setAdapter(adapter);
+            leerTodasC();
             txt.addTextChangedListener(new TextWatcher() {
 
                 @Override
@@ -119,6 +120,33 @@ public class añadirComunidad extends Fragment {
         });
         AlertDialog b = dialogBuilder.create();
         b.show();
+    }
+
+    public void leerTodasC() {
+
+
+        DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("comunidades");
+
+        dbrf.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                comunidades.clear();
+                Iterator<DataSnapshot> hijos = dataSnapshot.getChildren().iterator();
+               while (hijos.hasNext()){
+                   DataSnapshot dato=(DataSnapshot) hijos.next();
+                  String h =dato.getKey();
+
+                  comunidades.add(h);
+               }
+                adapter = new ArrayAdapter(vista.getContext(), android.R.layout.simple_list_item_1, comunidades);
+                lv.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }
