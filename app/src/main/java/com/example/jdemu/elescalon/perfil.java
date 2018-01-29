@@ -1,15 +1,18 @@
 package com.example.jdemu.elescalon;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,20 +25,29 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
-import org.w3c.dom.Text;
-
+import java.io.File;
+import java.io.IOException;
 import java.security.Key;
 import java.util.ArrayList;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by jdemu on 16/01/2018.
@@ -44,12 +56,13 @@ import javax.crypto.spec.SecretKeySpec;
 public class perfil extends Fragment {
     View vista;
     Spinner edad, comunidad;
-    ImageView ver,foto;
+    ImageView ver, foto;
     TextView contra, correoE;
     EditText otros, name, calle;
     String correo;
     Bundle b;
     ConstraintLayout cl;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -66,9 +79,10 @@ public class perfil extends Fragment {
             correoE = (TextView) vista.findViewById(R.id.Pcorreo);
             otros = (EditText) vista.findViewById(R.id.Potros);
             contra = (TextView) vista.findViewById(R.id.contras);
-            cl=(ConstraintLayout)vista.findViewById(R.id.pantallaPerfil);
-            foto=(ImageView)vista.findViewById(R.id.Pfoto);
+            cl = (ConstraintLayout) vista.findViewById(R.id.pantallaPerfil);
+            foto = (ImageView) vista.findViewById(R.id.Pfoto);
             b = getArguments();
+
             correo = b.getString("correo");
             ArrayList<Integer> edades = new ArrayList();
             for (int i = 0; i < 85; i++) {
@@ -99,13 +113,15 @@ public class perfil extends Fragment {
                 }
             });
             leerDatos();
+            cargarFoto();
             edad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                int posicion=edad.getSelectedItemPosition();
+                int posicion = edad.getSelectedItemPosition();
+
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if(posicion!=position){
+                    if (posicion != position) {
                         actualizarEdad(position);
-                        posicion=position;
+                        posicion = position;
                     }
 
                 }
@@ -119,7 +135,7 @@ public class perfil extends Fragment {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     actualizarCalle(String.valueOf(String.valueOf(calle.getText())));
-                    if(!hasFocus){
+                    if (!hasFocus) {
                         closeSoftKeyBoard();
                     }
                 }
@@ -128,7 +144,7 @@ public class perfil extends Fragment {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     actualizarNombre(String.valueOf(name.getText()));
-                    if(!hasFocus){
+                    if (!hasFocus) {
                         closeSoftKeyBoard();
                     }
                 }
@@ -137,7 +153,7 @@ public class perfil extends Fragment {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
                     actualizarOtros(String.valueOf(String.valueOf(otros.getText())));
-                    if(!hasFocus){
+                    if (!hasFocus) {
                         closeSoftKeyBoard();
 
                     }
@@ -149,6 +165,12 @@ public class perfil extends Fragment {
                     otros.clearFocus();
                     calle.clearFocus();
                     name.clearFocus();
+                }
+            });
+            foto.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    createSingleListDialog();
                 }
             });
         }
@@ -189,44 +211,114 @@ public class perfil extends Fragment {
             }
         });
     }
-    public void actualizarNombre(String Nuevonombre){
+
+    public void actualizarNombre(String Nuevonombre) {
         DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("usuarios").child(correo);
         dbrf.child("nombre").setValue(Nuevonombre);
     }
-    public void actualizarCalle(String Nuevacalle){
+
+    public void actualizarCalle(String Nuevacalle) {
         DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("usuarios").child(correo);
         dbrf.child("calle").setValue(Nuevacalle);
     }
-    public void actualizarOtros(String NuevoOtros){
+
+    public void actualizarOtros(String NuevoOtros) {
         DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("usuarios").child(correo);
         dbrf.child("otros").setValue(NuevoOtros);
     }
-    public void actualizarEdad(int posicion){
+
+    public void actualizarEdad(int posicion) {
         DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("usuarios").child(correo);
-        dbrf.child("edad").setValue(posicion+15);
+        dbrf.child("edad").setValue(posicion + 15);
     }
+
     public void closeSoftKeyBoard() {
         InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(vista.getWindowToken(), 0);
     }
+
     private static final String ALGORITHM = "AES";
     private static final String KEY = "1Hbfh667adfDEJ78";
 
-    public static String desencriptar(String value) throws Exception
-    {
+    public static String desencriptar(String value) throws Exception {
         Key key = generateKey();
         Cipher cipher = Cipher.getInstance(perfil.ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, key);
         byte[] decryptedValue64 = Base64.decode(value, Base64.DEFAULT);
-        byte [] decryptedByteValue = cipher.doFinal(decryptedValue64);
+        byte[] decryptedByteValue = cipher.doFinal(decryptedValue64);
         String decryptedValue = new String(decryptedByteValue, "utf-8");
         return decryptedValue;
 
     }
-    private static Key generateKey() throws Exception
-    {
-        Key key = new SecretKeySpec(perfil.KEY.getBytes(),perfil.ALGORITHM);
+
+    private static Key generateKey() throws Exception {
+        Key key = new SecretKeySpec(perfil.KEY.getBytes(), perfil.ALGORITHM);
         return key;
     }
 
+    public void createSingleListDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final CharSequence[] items = new CharSequence[2];
+        items[0] = "Cámara";
+        items[1] = "Galería";
+        builder.setTitle("Elija una opción")
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            //  Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            //startActivityForResult(intent, 1);
+                        } else {
+                            Intent i = new Intent(Intent.ACTION_PICK);
+                            i.setType("image/*");
+                            startActivityForResult(i, 1);
+                        }
+                    }
+                });
+
+        builder.create().show();
+    }
+    public void cargarFoto(){
+        try {
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReferenceFromUrl("gs://elescalon-79fa4.appspot.com").child("images").child(correo);
+            final File localFile = File.createTempFile("images", "jpg");
+            storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                    foto.setImageBitmap(bitmap);
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                }
+            });
+        } catch (IOException e ) {}
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Toast.makeText(vista.getContext(), "Su foto esta cargando, espere por favor", Toast.LENGTH_SHORT).show();
+        if(requestCode==1 && resultCode==RESULT_OK){
+            final Uri uri=data.getData();
+            StorageReference almacen= FirebaseStorage.getInstance().getReference();
+            StorageReference img=almacen.child("images").child(correo);
+            img.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Toast.makeText(vista.getContext(), "Se ha subido", Toast.LENGTH_SHORT).show();
+                    foto.setImageURI(uri);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(vista.getContext(), "No se ha subido", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        }
+    }
 }

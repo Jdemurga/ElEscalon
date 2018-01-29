@@ -6,12 +6,8 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
-import android.view.MenuItem;
-import android.view.Window;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,7 +19,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.security.Key;
-import java.util.ArrayList;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -34,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     FragmentTransaction fts;
     FirebaseAuth fauth = FirebaseAuth.getInstance();
     DatabaseReference fdb = FirebaseDatabase.getInstance().getReference();
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
