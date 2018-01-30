@@ -181,7 +181,6 @@ public class perfil extends Fragment {
         final int[] edades = new int[1];
         final String[] otro = new String[1];
         DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("usuarios").child(correo);
-
         dbrf.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
