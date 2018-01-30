@@ -104,7 +104,7 @@
 
     <Spinner
         android:id="@+id/edad"
-        android:layout_width="98dp"
+        android:layout_width="wrap_content"
         android:layout_height="27dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="44dp"
@@ -347,7 +347,6 @@
         android:layout_height="40dp"
         android:ems="10"
         android:inputType="textLongMessage|textPersonName"
-        android:text="ÑPD"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.167"

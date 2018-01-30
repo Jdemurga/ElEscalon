@@ -1,6 +1,8 @@
 package com.example.jdemu.elescalon;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -35,6 +37,7 @@ public class Miscomunidades extends Fragment {
     ArrayList<String> comunidades;
     String correo;
     Bundle b;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -80,12 +83,20 @@ public class Miscomunidades extends Fragment {
                     ((inicio) getActivity()).entrarForo();
                 }
             });
+            lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    BorrarDialogo(String.valueOf(lv.getItemAtPosition(i)));
+                    return true;
+                }
+            });
 
 
         }
 
         return vista;
     }
+
     public void leerListas() {
         final String[] nombres = new String[1];
 
@@ -96,17 +107,70 @@ public class Miscomunidades extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 comunidades.clear();
                 nombres[0] = dataSnapshot.child("comunidades").getValue(String.class);
-                String[] com=nombres[0].split(",");
+                String[] com = nombres[0].split(",");
                 for (int i = 0; i < com.length; i++) {
                     comunidades.add(com[i]);
                     adapter = new ArrayAdapter(vista.getContext(), android.R.layout.simple_list_item_1, comunidades);
                     lv.setAdapter(adapter);
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
+    }
+
+    public void BorrarListas(final String borr) {
+        final String[] nombres = new String[1];
+        final String borrar = borr;
+        DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("usuarios").child(correo);
+        dbrf.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                nombres[0] = dataSnapshot.child("comunidades").getValue(String.class);
+                String[] largo = nombres[0].split(",");
+                DatabaseReference dbf = FirebaseDatabase.getInstance().getReference().child("usuarios").child(correo);
+                String dato = "";
+                for (int i = 0; i < largo.length; i++) {
+                    if (!largo[i].equals(borrar)) {
+                        if (!dato.equals("")) {
+                            dato += "," + largo[i];
+                        } else {
+                            dato += largo[i];
+                        }
+                    }
+                }
+                dbf.child("comunidades").setValue(dato);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
+
+    public void BorrarDialogo(final String comunidad) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder.setTitle("Borrar comunidad")
+                .setMessage("Desea borrar la comunidad " + comunidad + " a su lista")
+                .setPositiveButton("ACEPTAR",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                BorrarListas(comunidad);
+                            }
+                        })
+                .setNegativeButton("CANCELAR",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+
+        builder.create().show();
     }
 }

@@ -192,7 +192,7 @@ public class perfil extends Fragment {
                 otro[0] = dataSnapshot.child("otros").getValue(String.class);
                 name.setText(nombre[0]);
                 calle.setText(calles[0]);
-                correoE.setText((CharSequence) correo);
+                correoE.setText((CharSequence) correo.replace(",","."));
                 otros.setText(otro[0]);
                 try {
                     contra.setText(desencriptar(contraseña[0]));
