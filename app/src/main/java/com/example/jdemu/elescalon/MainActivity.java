@@ -29,17 +29,20 @@ public class MainActivity extends AppCompatActivity {
     FragmentTransaction fts;
     FirebaseAuth fauth = FirebaseAuth.getInstance();
     DatabaseReference fdb = FirebaseDatabase.getInstance().getReference();
+    Bundle b;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        b = new Bundle();
         pLogin();
     }
 
     public void pLogin() {
         fragment = new login();
         fts = fm.beginTransaction();
+        fragment.setArguments(b);
         fts.replace(R.id.container, fragment);
         fts.commit();
     }
@@ -47,13 +50,14 @@ public class MainActivity extends AppCompatActivity {
     public void pRegis() {
         fragment = new registro();
         fts = fm.beginTransaction();
+        fragment.setArguments(b);
         fts.replace(R.id.container, fragment);
         fts.commit();
     }
 
     public void iniciar(String correo) {
         Intent intent = new Intent(getApplicationContext(), inicio.class);
-        String corre=correo.replace(".",",");
+        String corre = correo.replace(".", ",");
         intent.putExtra("correo", corre);
         startActivity(intent);
     }
@@ -68,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Toast.makeText(getApplicationContext(), "Se ha registrado con exito", Toast.LENGTH_SHORT).show();
                     String guardado = email.replace('.', ',');
-                    Usuario user = new Usuario(nom, con, 22, "","",email);
+                    Usuario user = new Usuario(nom, con, 22, "", "", email);
                     fdb.child("usuarios").child(guardado).push();
                     fdb.child("usuarios").child(guardado).child("nombre").push();
                     fdb.child("usuarios").child(guardado).child("contraseña").push();
@@ -96,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void login(String email, String password) {
-        final String hot=email;
+        final String hot = email;
         fauth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -110,25 +114,35 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
     private static final String ALGORITHM = "AES";
     private static final String KEY = "1Hbfh667adfDEJ78";
 
-    public static String encriptar(String value) throws Exception
-    {
+    public static String encriptar(String value) throws Exception {
         Key key = generateKey();
         Cipher cipher = Cipher.getInstance(MainActivity.ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, key);
-        byte [] encryptedByteValue = cipher.doFinal(value.getBytes("utf-8"));
+        byte[] encryptedByteValue = cipher.doFinal(value.getBytes("utf-8"));
         String encryptedValue64 = Base64.encodeToString(encryptedByteValue, Base64.DEFAULT);
         return encryptedValue64;
 
     }
 
 
-    private static Key generateKey() throws Exception
-    {
-        Key key = new SecretKeySpec(MainActivity.KEY.getBytes(),MainActivity.ALGORITHM);
+    private static Key generateKey() throws Exception {
+        Key key = new SecretKeySpec(MainActivity.KEY.getBytes(), MainActivity.ALGORITHM);
         return key;
+    }
+
+    @Override
+    public void onBackPressed() {
+        int pag = b.getInt("numPag");
+        if (pag == 1) {
+            pLogin();
+        } else {
+            super.onBackPressed();
+
+        }
     }
 }
 
