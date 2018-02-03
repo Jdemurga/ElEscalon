@@ -6,10 +6,17 @@
     android:orientation="vertical">
 
     <EditText
-        android:id="@+id/edit1"
+        android:id="@+id/edit3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nombre"
+        android:hint="Titulo"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/edit4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mensaje"
         android:inputType="text" />
 
 </LinearLayout>

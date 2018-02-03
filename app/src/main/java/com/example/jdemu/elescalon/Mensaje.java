@@ -1,6 +1,7 @@
 package com.example.jdemu.elescalon;
 
 import android.app.Fragment;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 /**
@@ -8,12 +9,12 @@ import android.graphics.drawable.Drawable;
  */
 
 public class Mensaje {
-    protected Drawable foto;
+    protected Bitmap foto;
     protected String titulo;
     protected String msm;
     protected long id;
 
-    public Mensaje(Drawable foto, String titulo, String msm) {
+    public Mensaje(Bitmap foto, String titulo, String msm) {
         super();
         this.foto = foto;
         this.titulo = titulo;
@@ -22,7 +23,7 @@ public class Mensaje {
 
 
 
-    public Drawable getFoto() {
+    public Bitmap getFoto() {
         return foto;
     }
 

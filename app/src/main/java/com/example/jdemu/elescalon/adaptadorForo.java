@@ -53,7 +53,7 @@ public class adaptadorForo extends BaseAdapter {
         Mensaje dir = items.get(position);
         //Rellenamos la fotografía
         ImageView foto = (ImageView) v.findViewById(R.id.foto);
-        foto.setImageDrawable(dir.getFoto());
+        foto.setImageBitmap(dir.getFoto());
         //Rellenamos el nombre
         TextView titulo = (TextView) v.findViewById(R.id.Titulo);
         titulo.setText(dir.getTitulo());

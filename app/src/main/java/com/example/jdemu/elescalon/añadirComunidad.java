@@ -84,7 +84,6 @@ public class añadirComunidad extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     String nombre = String.valueOf(lv.getItemAtPosition(position));
-
                     añadirDialogo(nombre);
 
                 }
@@ -106,14 +105,13 @@ public class añadirComunidad extends Fragment {
         dialogBuilder.setView(dialogView);
 
         final EditText edt = (EditText) dialogView.findViewById(R.id.edit1);
-        final EditText edt2 = (EditText) dialogView.findViewById(R.id.edit2);
 
 
         dialogBuilder.setTitle("Nuevo comunidad");
         dialogBuilder.setMessage("Introduzca los datos");
         dialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                if (!(String.valueOf(edt.getText()).equals("") || String.valueOf(edt2.getText()).equals(""))) {
+                if (!(String.valueOf(edt.getText()).equals(""))) {
                     subirCom(String.valueOf(edt.getText()), String.valueOf(edt.getText()));
                 }
             }
@@ -205,6 +203,12 @@ public class añadirComunidad extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+        DatabaseReference drf = FirebaseDatabase.getInstance().getReference().child("comunidades").child(nueva).child("Participantes");
+        drf.child(correo).push();
+        drf.child(correo).child("valoracion").push();
+        drf.child(correo).child("numValor").push();
+        drf.child(correo).child("valoracion").setValue(0);
+        drf.child(correo).child("numValor").setValue(0);
     }
 
     public void añadirDialogo(final String comunidad) {

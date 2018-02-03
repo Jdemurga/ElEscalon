@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,7 +16,10 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,6 +41,7 @@ public class Miscomunidades extends Fragment {
     ArrayList<String> comunidades;
     String correo;
     Bundle b;
+    String comu;
 
     @Nullable
     @Override
@@ -80,7 +85,8 @@ public class Miscomunidades extends Fragment {
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    ((inicio) getActivity()).entrarForo();
+                    comu=String.valueOf(lv.getItemAtPosition(position));
+                    ((inicio) getActivity()).entrarForo(comu,correo);
                 }
             });
             lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -122,7 +128,7 @@ public class Miscomunidades extends Fragment {
         });
     }
 
-    public void BorrarListas(final String borr) {
+    public void BorrarListas(String borr) {
         final String[] nombres = new String[1];
         final String borrar = borr;
         DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("usuarios").child(correo);
@@ -145,10 +151,34 @@ public class Miscomunidades extends Fragment {
                 dbf.child("comunidades").setValue(dato);
             }
 
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+        DatabaseReference drf = FirebaseDatabase.getInstance().getReference().child("comunidades").child(borrar).child("Foro");
+        drf.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                DatabaseReference df = FirebaseDatabase.getInstance().getReference().child("comunidades").child(borrar).child("Foro").child(correo);
+                df.removeValue();
+                DatabaseReference daf = FirebaseDatabase.getInstance().getReference().child("comunidades").child(borrar).child("Participantes").child(correo);
+                final Task t;
+                t = daf.removeValue();
+                t.addOnCompleteListener(new OnCompleteListener() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        Toast.makeText(vista.getContext(), String.valueOf(t), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     public void BorrarDialogo(final String comunidad) {

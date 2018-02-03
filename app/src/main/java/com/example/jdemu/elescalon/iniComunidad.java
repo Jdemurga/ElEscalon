@@ -15,6 +15,9 @@ public class iniComunidad extends AppCompatActivity {
     FragmentManager fm = getFragmentManager();
     Fragment fragment;
     FragmentTransaction fts;
+    String laComunidad;
+    Bundle b;
+    String correo;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -37,6 +40,11 @@ public class iniComunidad extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ini_comunidad);
+        laComunidad = getIntent().getStringExtra("comunidad");
+        correo=getIntent().getStringExtra("correo");
+        b= new Bundle();
+        b.putString("comuni",laComunidad);
+        b.putString("correo",correo);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         verForo();
@@ -45,6 +53,7 @@ public class iniComunidad extends AppCompatActivity {
         fragment = new foroMns();
         fts = fm.beginTransaction();
         fts.replace(R.id.container, fragment);
+        fragment.setArguments(b);
         fts.commit();
     }
 

@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                     fdb.child("usuarios").child(guardado).child("edad").setValue(user.getEdad());
                     fdb.child("usuarios").child(guardado).child("calle").setValue(user.getCalle());
                     fdb.child("usuarios").child(guardado).child("otros").setValue(user.getOtros());
+                    fdb.child("usuarios").child(guardado).child("comunidades").setValue("");
                     pLogin();
                 } else {
                     FirebaseAuthException e = (FirebaseAuthException) task.getException();

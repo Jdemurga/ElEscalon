@@ -83,8 +83,10 @@ public class inicio extends AppCompatActivity {
         fts.commit();
     }
 
-    public void entrarForo() {
+    public void entrarForo(String comunidad,String correo) {
         Intent intent = new Intent(this, iniComunidad.class);
+        intent.putExtra("comunidad", comunidad);
+        intent.putExtra("correo", correo);
         startActivity(intent);
     }
     @Override
