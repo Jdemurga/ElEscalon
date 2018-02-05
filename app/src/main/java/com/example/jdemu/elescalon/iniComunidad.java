@@ -42,7 +42,7 @@ public class iniComunidad extends AppCompatActivity {
         setContentView(R.layout.activity_ini_comunidad);
         laComunidad = getIntent().getStringExtra("comunidad");
         correo=getIntent().getStringExtra("correo");
-        b= new Bundle();
+        b = new Bundle();
         b.putString("comuni",laComunidad);
         b.putString("correo",correo);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);

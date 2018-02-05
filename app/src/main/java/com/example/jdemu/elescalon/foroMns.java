@@ -56,6 +56,10 @@ public class foroMns extends Fragment {
     String correo;
     ArrayList<Mensaje> mensajes = new ArrayList<>();
     Mensaje mns;
+    ArrayList<String> emails = new ArrayList();
+    ArrayList<Bitmap> fotos = new ArrayList();
+    ArrayList<String> titulos = new ArrayList<>();
+    ArrayList<String> descriptions = new ArrayList<>();
 
     @Nullable
     @Override
@@ -72,7 +76,7 @@ public class foroMns extends Fragment {
             b = getArguments();
             comuni = b.getString("comuni");
             correo = b.getString("correo");
-            leerForo();
+            llaves();
             cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -175,9 +179,10 @@ public class foroMns extends Fragment {
         });
     }
 
-    public void leerForo() {
-        DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("comunidades").child("principe").child("Foro");
-        final Activity a = getActivity();
+
+
+    public void llaves() {
+        DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("comunidades").child(comuni).child("Foro");
         dbrf.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -185,45 +190,57 @@ public class foroMns extends Fragment {
                 Iterator<DataSnapshot> hijos = dataSnapshot.getChildren().iterator();
                 while (hijos.hasNext()) {
                     final Bitmap[] bitmap = new Bitmap[1];
-                        DataSnapshot dato = (DataSnapshot) hijos.next();
-                        String h = dato.getKey();
-                        String titulo = (String) dato.child("Titulo").getValue();
-                        String description = (String) dato.child("Descripcion").getValue();
-
-
-                        try {
-                            FirebaseStorage storage = FirebaseStorage.getInstance();
-                            StorageReference storageRef = storage.getReferenceFromUrl("gs://elescalon-79fa4.appspot.com").child("images").child(correo);
-                            final File localFile = File.createTempFile("images", "jpg");
-                            storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                                @Override
-                                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                                    bitmap[0] = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-
+                    DataSnapshot dato = (DataSnapshot) hijos.next();
+                    String h = dato.getKey();
+                    String titulo = (String) dato.child("Titulo").getValue();
+                    String description = (String) dato.child("Descripcion").getValue();
+                    titulos.add(titulo);
+                    descriptions.add(description);
+                    emails.add(h);
+                }
+                for (int i = 0; i < emails.size(); i++) {
+                    try {
+                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                        StorageReference storageRef = storage.getReferenceFromUrl("gs://elescalon-79fa4.appspot.com").child("images").child(emails.get(i));
+                        final File localFile = File.createTempFile("images", "jpg");
+                        storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                Bitmap bit = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                                fotos.add(bit);
+                                if (fotos.size() == titulos.size()) {
+                                    for (int i = 0; i < fotos.size(); i++) {
+                                        mns = new Mensaje(fotos.get(i), titulos.get(i), descriptions.get(i));
+                                        mensajes.add(mns);
+                                    }
+                                    adaptadorForo = new adaptadorForo(getActivity(), mensajes);
+                                    foross.setAdapter(adaptadorForo);
                                 }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception exception) {
-                                }
-                            });
-                        } catch (IOException e) {
 
-                        }
 
-                        mns = new Mensaje(bitmap[0], titulo, description);
-                        mensajes.add(mns);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                            }
+                        });
+                    } catch (IOException e) {
+
                     }
+                }
 
-                adaptadorForo = new adaptadorForo(a, mensajes);
-                foross.setAdapter(adaptadorForo);
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
     }
+
+
+
+
+
 
 
 }

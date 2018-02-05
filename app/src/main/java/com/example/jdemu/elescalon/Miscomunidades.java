@@ -85,8 +85,8 @@ public class Miscomunidades extends Fragment {
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    comu=String.valueOf(lv.getItemAtPosition(position));
-                    ((inicio) getActivity()).entrarForo(comu,correo);
+                    comu = String.valueOf(lv.getItemAtPosition(position));
+                    ((inicio) getActivity()).entrarForo(comu, correo);
                 }
             });
             lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -116,9 +116,9 @@ public class Miscomunidades extends Fragment {
                 String[] com = nombres[0].split(",");
                 for (int i = 0; i < com.length; i++) {
                     comunidades.add(com[i]);
-                    adapter = new ArrayAdapter(vista.getContext(), android.R.layout.simple_list_item_1, comunidades);
-                    lv.setAdapter(adapter);
                 }
+                adapter = new ArrayAdapter(vista.getContext(), android.R.layout.simple_list_item_1, comunidades);
+                lv.setAdapter(adapter);
             }
 
             @Override
@@ -163,16 +163,8 @@ public class Miscomunidades extends Fragment {
                 DatabaseReference df = FirebaseDatabase.getInstance().getReference().child("comunidades").child(borrar).child("Foro").child(correo);
                 df.removeValue();
                 DatabaseReference daf = FirebaseDatabase.getInstance().getReference().child("comunidades").child(borrar).child("Participantes").child(correo);
-                final Task t;
-                t = daf.removeValue();
-                t.addOnCompleteListener(new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        Toast.makeText(vista.getContext(), String.valueOf(t), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                daf.removeValue();
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -185,7 +177,7 @@ public class Miscomunidades extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle("Borrar comunidad")
-                .setMessage("Desea borrar la comunidad " + comunidad + " a su lista")
+                .setMessage("Desea borrar la comunidad " + comunidad + " de su lista")
                 .setPositiveButton("ACEPTAR",
                         new DialogInterface.OnClickListener() {
                             @Override

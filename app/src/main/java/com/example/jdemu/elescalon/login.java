@@ -55,6 +55,7 @@ public class login extends Fragment {
                     switch ( event.getAction() ) {
                         case MotionEvent.ACTION_DOWN:
                             contra.setInputType(InputType.TYPE_CLASS_TEXT);
+                            contra.setSelection(contra.getText().length());
                             contra.setTypeface(fuente);
                             break;
                         case MotionEvent.ACTION_UP:

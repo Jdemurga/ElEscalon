@@ -313,7 +313,7 @@ public class perfil extends Fragment {
 
                 }
             });
-        } else if (requestCode == 2) {
+        } else if (requestCode == 2 && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             final Bitmap imageBitmap = (Bitmap) extras.get("data");
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
