@@ -65,7 +65,6 @@ public class perfil extends Fragment {
     Bundle b;
     ConstraintLayout cl;
     ArrayList<String> comunidades;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {

@@ -4,6 +4,9 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -11,13 +14,19 @@ import android.util.Base64;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.security.Key;
 
 import javax.crypto.Cipher;
@@ -63,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void registrar(String name, String pass, String gmail) {
+        Bitmap bit = BitmapFactory.decodeResource(getResources(), R.drawable.foto);
+        final Bitmap b= bit;
         final String nom = name;
         final String con = pass;
         final String email = gmail;
@@ -70,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Se ha registrado con exito", Toast.LENGTH_SHORT).show();
                     String guardado = email.replace('.', ',');
                     Usuario user = new Usuario(nom, con, 22, "", "", email);
                     fdb.child("usuarios").child(guardado).push();
@@ -90,6 +100,27 @@ public class MainActivity extends AppCompatActivity {
                     fdb.child("usuarios").child(guardado).child("calle").setValue(user.getCalle());
                     fdb.child("usuarios").child(guardado).child("otros").setValue(user.getOtros());
                     fdb.child("usuarios").child(guardado).child("comunidades").setValue("");
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    b.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                    byte[] imageData = stream.toByteArray();
+                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                    StorageReference storageRef = storage.getReference();
+                    String coma=email.replace(".",",");
+                    StorageReference imageRef = storageRef.child("images").child(coma);
+                    UploadTask uploadTask = imageRef.putBytes(imageData);
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(), "no se guarda foto con exito", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(getApplicationContext(), "Se ha registrado con exito", Toast.LENGTH_SHORT).show();
+                        }
+
+                    });
                     pLogin();
                 } else {
                     FirebaseAuthException e = (FirebaseAuthException) task.getException();
@@ -97,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
 

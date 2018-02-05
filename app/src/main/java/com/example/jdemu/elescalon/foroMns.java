@@ -179,43 +179,54 @@ public class foroMns extends Fragment {
     }
 
 
-
     public void llaves() {
         DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("comunidades").child(comuni).child("Foro");
         dbrf.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mensajes.clear();
+                emails.clear();
+                titulos.clear();
+                descriptions.clear();
                 Iterator<DataSnapshot> hijos = dataSnapshot.getChildren().iterator();
                 while (hijos.hasNext()) {
-                    final Bitmap[] bitmap = new Bitmap[1];
                     DataSnapshot dato = (DataSnapshot) hijos.next();
                     String h = dato.getKey();
                     String titulo = (String) dato.child("Titulo").getValue();
                     String description = (String) dato.child("Descripcion").getValue();
-                    titulos.add(titulo);
-                    descriptions.add(description);
+                    titulos.add(titulo + "dataname" + h);
+                    descriptions.add(description + "dataname" + h);
                     emails.add(h);
                 }
                 for (int i = 0; i < emails.size(); i++) {
+
                     try {
                         FirebaseStorage storage = FirebaseStorage.getInstance();
-                        StorageReference storageRef = storage.getReferenceFromUrl("gs://elescalon-79fa4.appspot.com").child("images").child(emails.get(i));
+                        final StorageReference storageRef = storage.getReferenceFromUrl("gs://elescalon-79fa4.appspot.com").child("images").child(emails.get(i));
                         final File localFile = File.createTempFile("images", "jpg");
                         storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                             @Override
                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                                 Bitmap bit = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                                fotos.add(bit);
-                                if (fotos.size() == titulos.size()) {
-                                    for (int i = 0; i < fotos.size(); i++) {
-                                        mns = new Mensaje(fotos.get(i), titulos.get(i), descriptions.get(i));
-                                        mensajes.add(mns);
+                                String titu = "";
+                                String desci = "";
+                                String email = storageRef.getName();
+                                for (int j = 0; j < titulos.size(); j++) {
+                                    String[] ver = titulos.get(j).split("dataname");
+                                    if (ver[1].equals(email)) {
+                                        titu = ver[0];
                                     }
-                                    adaptadorForo = new adaptadorForo(getActivity(), mensajes);
-                                    foross.setAdapter(adaptadorForo);
                                 }
-
+                                for (int z = 0; z < titulos.size(); z++) {
+                                    String[] see = descriptions.get(z).split("dataname");
+                                    if (see[1].equals(email)) {
+                                        desci = see[0];
+                                    }
+                                }
+                                mns = new Mensaje(bit, titu, desci);
+                                mensajes.add(mns);
+                                adaptadorForo = new adaptadorForo(getActivity(), mensajes);
+                                foross.setAdapter(adaptadorForo);
 
                             }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -223,6 +234,7 @@ public class foroMns extends Fragment {
                             public void onFailure(@NonNull Exception exception) {
                             }
                         });
+
                     } catch (IOException e) {
 
                     }
@@ -235,11 +247,6 @@ public class foroMns extends Fragment {
             }
         });
     }
-
-
-
-
-
 
 
 }
