@@ -62,6 +62,7 @@ public class login extends Fragment {
                             contra.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                             contra.setSelection(contra.getText().length());
                             contra.setTypeface(fuente);
+
                             break;
                     }
                     return true;

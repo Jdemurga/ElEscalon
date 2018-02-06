@@ -108,13 +108,7 @@ public class MainActivity extends AppCompatActivity {
                     String coma=email.replace(".",",");
                     StorageReference imageRef = storageRef.child("images").child(coma);
                     UploadTask uploadTask = imageRef.putBytes(imageData);
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getApplicationContext(), "no se guarda foto con exito", Toast.LENGTH_SHORT).show();
-
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             Toast.makeText(getApplicationContext(), "Se ha registrado con exito", Toast.LENGTH_SHORT).show();

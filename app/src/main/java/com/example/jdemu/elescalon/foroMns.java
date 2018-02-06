@@ -56,10 +56,7 @@ public class foroMns extends Fragment {
     String correo;
     ArrayList<Mensaje> mensajes = new ArrayList<>();
     Mensaje mns;
-    ArrayList<String> emails = new ArrayList();
-    ArrayList<Bitmap> fotos = new ArrayList();
-    ArrayList<String> titulos = new ArrayList<>();
-    ArrayList<String> descriptions = new ArrayList<>();
+
 
     @Nullable
     @Override
@@ -157,37 +154,26 @@ public class foroMns extends Fragment {
     }
 
     public void subirCom(String nombreCom, String tit, String desc) {
-        final String nombre = nombreCom;
-        final String titulo = tit;
-        final String descrip = desc;
         DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("comunidades").child(nombreCom);
-        dbrf.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                DatabaseReference drf = FirebaseDatabase.getInstance().getReference().child("comunidades").child(nombre);
-                drf.child("Foro").child(correo).push();
-                drf.child("Foro").child(correo).child("Titulo").push();
-                drf.child("Foro").child(correo).child("Descripcion").push();
-                drf.child("Foro").child(correo).child("Titulo").setValue(titulo);
-                drf.child("Foro").child(correo).child("Descripcion").setValue(descrip);
-            }
+        dbrf.child("Foro").child(correo).push();
+        dbrf.child("Foro").child(correo).child("Titulo").push();
+        dbrf.child("Foro").child(correo).child("Titulo").setValue(tit);
+        dbrf.child("Foro").child(correo).child("Descripcion").push();
+        dbrf.child("Foro").child(correo).child("Descripcion").setValue(desc);
+        llaves();
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
     }
 
 
     public void llaves() {
         DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("comunidades").child(comuni).child("Foro");
-        dbrf.addValueEventListener(new ValueEventListener() {
+        dbrf.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mensajes.clear();
-                emails.clear();
-                titulos.clear();
-                descriptions.clear();
+                ArrayList<String> emails = new ArrayList();
+                final ArrayList<String> titulos = new ArrayList<>();
+                final ArrayList<String> descriptions = new ArrayList<>();
                 Iterator<DataSnapshot> hijos = dataSnapshot.getChildren().iterator();
                 while (hijos.hasNext()) {
                     DataSnapshot dato = (DataSnapshot) hijos.next();
@@ -199,7 +185,6 @@ public class foroMns extends Fragment {
                     emails.add(h);
                 }
                 for (int i = 0; i < emails.size(); i++) {
-
                     try {
                         FirebaseStorage storage = FirebaseStorage.getInstance();
                         final StorageReference storageRef = storage.getReferenceFromUrl("gs://elescalon-79fa4.appspot.com").child("images").child(emails.get(i));
@@ -217,17 +202,16 @@ public class foroMns extends Fragment {
                                         titu = ver[0];
                                     }
                                 }
-                                for (int z = 0; z < titulos.size(); z++) {
+                                for (int z = 0; z < descriptions.size(); z++) {
                                     String[] see = descriptions.get(z).split("dataname");
                                     if (see[1].equals(email)) {
                                         desci = see[0];
                                     }
                                 }
-                                mns = new Mensaje(bit, titu, desci);
+                                mns = new Mensaje(bit, titu , desci);
                                 mensajes.add(mns);
                                 adaptadorForo = new adaptadorForo(getActivity(), mensajes);
                                 foross.setAdapter(adaptadorForo);
-
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
