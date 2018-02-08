@@ -1,14 +1,11 @@
 package com.example.jdemu.elescalon;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,11 +15,13 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -56,7 +55,7 @@ public class foroMns extends Fragment {
     String correo;
     ArrayList<Mensaje> mensajes = new ArrayList<>();
     Mensaje mns;
-
+    String name = "";
 
     @Nullable
     @Override
@@ -119,6 +118,13 @@ public class foroMns extends Fragment {
                 @Override
                 public void onClick(View view) {
                     showChangeLangDialog();
+                }
+            });
+            foross.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Mensaje mensaje = (Mensaje) foross.getItemAtPosition(i);
+                    createMessageDialogo(mensaje);
                 }
             });
         }
@@ -208,7 +214,7 @@ public class foroMns extends Fragment {
                                         desci = see[0];
                                     }
                                 }
-                                mns = new Mensaje(bit, titu , desci);
+                                mns = new Mensaje(bit, titu, desci);
                                 mensajes.add(mns);
                                 adaptadorForo = new adaptadorForo(getActivity(), mensajes);
                                 foross.setAdapter(adaptadorForo);
@@ -232,5 +238,63 @@ public class foroMns extends Fragment {
         });
     }
 
+    @SuppressLint("NewApi")
+    public void createMessageDialogo(final Mensaje mensaje) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+
+        View v = inflater.inflate(R.layout.mostramensaje, null);
+        builder.setView(v);
+        final TextView nombre = (TextView) v.findViewById(R.id.txtNombre);
+        ImageView imagen = (ImageView) v.findViewById(R.id.mensajeFoto);
+        TextView tituloMensaje = (TextView) v.findViewById(R.id.txtTitulo);
+        TextView descripcionMensaje = (TextView) v.findViewById(R.id.txtDescripcion);
+        Button responder = (Button) v.findViewById(R.id.btnResponder);
+        tituloMensaje.setText(mensaje.getTitulo());
+        descripcionMensaje.setText(mensaje.getMSM());
+        imagen.setImageBitmap(mensaje.getFoto());
+
+
+        DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("comunidades").child(comuni).child("Foro");
+        dbrf.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final String[] nom = new String[1];
+                nom[0]="";
+                Iterator<DataSnapshot> hijos = dataSnapshot.getChildren().iterator();
+                while (hijos.hasNext()) {
+                    DataSnapshot dato = (DataSnapshot) hijos.next();
+                    String h = dato.getKey();
+                    String titulo = (String) dato.child("Titulo").getValue();
+                    String description = (String) dato.child("Descripcion").getValue();
+                    if (titulo.equals(mensaje.getTitulo()) && description.equals(mensaje.getMSM())) {
+
+                        DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("usuarios").child(h);
+                        dbrf.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                nom[0] = dataSnapshot.child("nombre").getValue(String.class);
+                                nombre.setText(nom[0]);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        builder.create().show();
+    }
 
 }
