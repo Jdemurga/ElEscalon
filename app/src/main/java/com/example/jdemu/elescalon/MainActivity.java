@@ -82,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     String guardado = email.replace('.', ',');
-                    Usuario user = new Usuario(nom, con, 22, "", "", email);
                     fdb.child("usuarios").child(guardado).push();
                     fdb.child("usuarios").child(guardado).child("nombre").push();
                     fdb.child("usuarios").child(guardado).child("contraseña").push();
@@ -90,15 +89,15 @@ public class MainActivity extends AppCompatActivity {
                     fdb.child("usuarios").child(guardado).child("calle").push();
                     fdb.child("usuarios").child(guardado).child("otros").push();
                     fdb.child("usuarios").child(guardado).child("comunidades").push();
-                    fdb.child("usuarios").child(guardado).child("nombre").setValue(user.getNombre());
+                    fdb.child("usuarios").child(guardado).child("nombre").setValue(nom);
                     try {
-                        fdb.child("usuarios").child(guardado).child("contraseña").setValue(encriptar(user.getContraseña()));
+                        fdb.child("usuarios").child(guardado).child("contraseña").setValue(encriptar(con));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    fdb.child("usuarios").child(guardado).child("edad").setValue(user.getEdad());
-                    fdb.child("usuarios").child(guardado).child("calle").setValue(user.getCalle());
-                    fdb.child("usuarios").child(guardado).child("otros").setValue(user.getOtros());
+                    fdb.child("usuarios").child(guardado).child("edad").setValue(22);
+                    fdb.child("usuarios").child(guardado).child("calle").setValue("");
+                    fdb.child("usuarios").child(guardado).child("otros").setValue("");
                     fdb.child("usuarios").child(guardado).child("comunidades").setValue("");
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     b.compress(Bitmap.CompressFormat.JPEG, 100, stream);

@@ -294,9 +294,9 @@ public class perfil extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Toast.makeText(vista.getContext(), "Su foto esta cargando, espere por favor", Toast.LENGTH_SHORT).show();
         if (requestCode == 1 && resultCode == RESULT_OK) {
             final Uri uri = data.getData();
+            Toast.makeText(vista.getContext(), "Su foto esta cargando, espere por favor", Toast.LENGTH_SHORT).show();
             StorageReference almacen = FirebaseStorage.getInstance().getReference();
             StorageReference img = almacen.child("images").child(correo);
             img.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

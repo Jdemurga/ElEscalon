@@ -28,9 +28,9 @@ public class iniComunidad extends AppCompatActivity {
                     verForo();
                     return true;
                 case R.id.navigation_dashboard:
+                    verParticipantes();
                     return true;
-                case R.id.navigation_notifications:
-                    return true;
+
             }
             return false;
         }
@@ -51,6 +51,13 @@ public class iniComunidad extends AppCompatActivity {
     }
     public void verForo(){
         fragment = new foroMns();
+        fts = fm.beginTransaction();
+        fts.replace(R.id.container, fragment);
+        fragment.setArguments(b);
+        fts.commit();
+    }
+    public void verParticipantes(){
+        fragment = new Participantes();
         fts = fm.beginTransaction();
         fts.replace(R.id.container, fragment);
         fragment.setArguments(b);

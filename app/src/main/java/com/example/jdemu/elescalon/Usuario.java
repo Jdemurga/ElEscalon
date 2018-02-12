@@ -1,5 +1,6 @@
 package com.example.jdemu.elescalon;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 import java.util.ArrayList;
@@ -10,27 +11,14 @@ import java.util.ArrayList;
 
 public class Usuario {
     String nombre;
-    String contraseña;
-    int edad;
-    String calle;
-    String otros;
-    String correo;
-    public Usuario(String nombre, String contraseña, int edad,  String calle, String otros,String correo) {
+    Bitmap foto;
+
+    public Usuario(String nombre, Bitmap foto) {
         this.nombre = nombre;
-        this.contraseña = contraseña;
-        this.edad = edad;
-        this.calle = calle;
-        this.otros = otros;
-        this.correo=correo;
+        this.foto = foto;
+
     }
 
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
 
     public String getNombre() {
         return nombre;
@@ -40,38 +28,11 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public Bitmap getFoto() {
+        return foto;
+    }
+    public void setFoto(Bitmap foto) {
+        this.foto = foto;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
-    }
-
-    public int getEdad() {
-        return edad;
-    }
-
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
-
-
-
-    public String getCalle() {
-        return calle;
-    }
-
-    public void setCalle(String calle) {
-        this.calle = calle;
-    }
-
-
-    public String getOtros() {
-        return otros;
-    }
-
-    public void setOtros(String otros) {
-        this.otros = otros;
-    }
 }
