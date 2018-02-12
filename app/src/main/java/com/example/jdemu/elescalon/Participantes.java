@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -47,6 +48,8 @@ public class Participantes extends Fragment {
     String correo;
     Usuario usuario;
     ArrayList<Usuario> usuaruios = new ArrayList();
+    GridView gv;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -54,11 +57,12 @@ public class Participantes extends Fragment {
             ViewGroup parent = (ViewGroup) vista.getParent();
             parent.removeView(vista);
         } else {
-            vista = inflater.inflate(R.layout.foro, container, false);
-            vista = inflater.inflate(R.layout.foro, container, false);
-            partici = (ListView) vista.findViewById(R.id.lvForo);
-            search = (TextView) vista.findViewById(R.id.search);
-            cancel = (ImageView) vista.findViewById(R.id.cancel3);
+            vista = inflater.inflate(R.layout.participantes, container, false);
+            //vista = inflater.inflate(R.layout.foro, container, false);
+            //partici = (ListView) vista.findViewById(R.id.lvForo);
+            gv = (GridView) vista.findViewById(R.id.gri);
+            search = (TextView) vista.findViewById(R.id.search2);
+            cancel = (ImageView) vista.findViewById(R.id.cancel4);
             b = getArguments();
             comuni = b.getString("comuni");
             correo = b.getString("correo");
@@ -91,10 +95,10 @@ public class Participantes extends Fragment {
                             }
                         }
                         adaptadorParticipantes = new adaptadorParticipantes(getActivity(), buscado);
-                        partici.setAdapter(adaptadorParticipantes);
+                        gv.setAdapter(adaptadorParticipantes);
                     } else {
                         adaptadorParticipantes = new adaptadorParticipantes(getActivity(), usuaruios);
-                        partici.setAdapter(adaptadorParticipantes);
+                        gv.setAdapter(adaptadorParticipantes);
                     }
                 }
 
@@ -129,7 +133,7 @@ public class Participantes extends Fragment {
                             @Override
                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                                 final Bitmap bit = BitmapFactory.decodeFile(localFile.getAbsolutePath());
-                                final String []nom = new String[1];
+                                 final String[] nom = new String[1];
                                 String email = storageRef.getName();
                                 DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("usuarios").child(email);
                                 dbrf.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -139,7 +143,7 @@ public class Participantes extends Fragment {
                                         usuario = new Usuario(nom[0], bit);
                                         usuaruios.add(usuario);
                                         adaptadorParticipantes = new adaptadorParticipantes(getActivity(), usuaruios);
-                                        partici.setAdapter(adaptadorParticipantes);
+                                        gv.setAdapter(adaptadorParticipantes);
                                     }
 
                                     @Override
@@ -147,7 +151,6 @@ public class Participantes extends Fragment {
 
                                     }
                                 });
-
 
                             }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -162,6 +165,7 @@ public class Participantes extends Fragment {
                 }
 
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }

@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class Usuario {
     String nombre;
     Bitmap foto;
+    protected long id;
 
     public Usuario(String nombre, Bitmap foto) {
         this.nombre = nombre;
@@ -33,6 +34,10 @@ public class Usuario {
     }
     public void setFoto(Bitmap foto) {
         this.foto = foto;
+    }
+
+    public long getId() {
+        return id;
     }
 
 }

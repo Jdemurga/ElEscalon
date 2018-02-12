@@ -23,7 +23,6 @@ public class adaptadorParticipantes extends BaseAdapter {
         this.activity = activity;
         this.items = items;
     }
-
     @Override
     public int getCount() {
         return items.size();
@@ -35,10 +34,9 @@ public class adaptadorParticipantes extends BaseAdapter {
     }
 
     @Override
-    public long getItemId(int i) {
-        return 0;
+    public long getItemId(int position) {
+        return items.get(position).getId();
     }
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
