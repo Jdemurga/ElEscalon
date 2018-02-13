@@ -12,11 +12,13 @@ import java.util.ArrayList;
 public class Usuario {
     String nombre;
     Bitmap foto;
+    String correo;
     protected long id;
 
-    public Usuario(String nombre, Bitmap foto) {
+    public Usuario(String nombre, Bitmap foto,String correo) {
         this.nombre = nombre;
         this.foto = foto;
+        this.correo = correo;
 
     }
 
@@ -34,6 +36,10 @@ public class Usuario {
     }
     public void setFoto(Bitmap foto) {
         this.foto = foto;
+    }
+
+    public String getCorreo() {
+        return correo;
     }
 
     public long getId() {

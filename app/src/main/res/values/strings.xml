@@ -5,4 +5,5 @@
     <string name="title_notifications">Perfil</string>
     <string name="title_activity_inicio">inicio</string>
     <string name="title_activity_ini_comunidad">iniComunidad</string>
+    <string name="title_activity_perfil_vecino">PerfilVecino</string>
 </resources>

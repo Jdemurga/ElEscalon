@@ -1,6 +1,7 @@
 package com.example.jdemu.elescalon;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -106,12 +108,23 @@ public class Participantes extends Fragment {
                 public void afterTextChanged(Editable s) {
                 }
             });
+            gv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Usuario user = (Usuario) gv.getItemAtPosition(i);
+                    String Ucorreo=user.getCorreo();
+                    Intent intent = new Intent(vista.getContext(), vecino.class);
+                    intent.putExtra("Ucorreo", Ucorreo);
+                    intent.putExtra("comunidadA",comuni);
+                    startActivity(intent);
+                }
+            });
         }
         return vista;
     }
 
     public void partc() {
-        DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("comunidades").child(comuni).child("Foro");
+        DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("comunidades").child(comuni).child("Participantes");
         dbrf.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -134,13 +147,13 @@ public class Participantes extends Fragment {
                             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                                 final Bitmap bit = BitmapFactory.decodeFile(localFile.getAbsolutePath());
                                  final String[] nom = new String[1];
-                                String email = storageRef.getName();
+                                final String email = storageRef.getName();
                                 DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("usuarios").child(email);
                                 dbrf.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         nom[0] = dataSnapshot.child("nombre").getValue(String.class);
-                                        usuario = new Usuario(nom[0], bit);
+                                        usuario = new Usuario(nom[0], bit,email);
                                         usuaruios.add(usuario);
                                         adaptadorParticipantes = new adaptadorParticipantes(getActivity(), usuaruios);
                                         gv.setAdapter(adaptadorParticipantes);
