@@ -17,6 +17,7 @@ public class iniComunidad extends AppCompatActivity {
     FragmentTransaction fts;
     String laComunidad;
     Bundle b;
+    BottomNavigationView navigation;
     String correo;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -45,7 +46,7 @@ public class iniComunidad extends AppCompatActivity {
         b = new Bundle();
         b.putString("comuni",laComunidad);
         b.putString("correo",correo);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation= (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         verForo();
     }
@@ -62,6 +63,17 @@ public class iniComunidad extends AppCompatActivity {
         fts.replace(R.id.container, fragment);
         fragment.setArguments(b);
         fts.commit();
+    }
+    @Override
+    public void onBackPressed() {
+        int pag = b.getInt("numPag");
+        if (pag == 4) {
+            verForo();
+            navigation.setSelectedItemId(R.id.navigation_home);
+        } else {
+            super.onBackPressed();
+
+        }
     }
 
 

@@ -68,6 +68,8 @@ public class Participantes extends Fragment {
             b = getArguments();
             comuni = b.getString("comuni");
             correo = b.getString("correo");
+            b.remove("numPag");
+            b.putInt("numPag",4);
             cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

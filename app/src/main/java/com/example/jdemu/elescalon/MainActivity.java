@@ -111,10 +111,11 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             Toast.makeText(getApplicationContext(), "Se ha registrado con exito", Toast.LENGTH_SHORT).show();
+                            pLogin();
                         }
 
                     });
-                    pLogin();
+
                 } else {
                     FirebaseAuthException e = (FirebaseAuthException) task.getException();
                     Toast.makeText(getApplicationContext(), "No se ha podido registrar", Toast.LENGTH_SHORT).show();

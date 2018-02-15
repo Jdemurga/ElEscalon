@@ -72,6 +72,8 @@ public class foroMns extends Fragment {
             b = getArguments();
             comuni = b.getString("comuni");
             correo = b.getString("correo");
+            b.remove("numPag");
+            b.putInt("numPag",3);
             llaves();
             cancel.setOnClickListener(new View.OnClickListener() {
                 @Override

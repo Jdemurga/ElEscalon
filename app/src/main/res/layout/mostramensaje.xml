@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:orientation="vertical">
 
     <ImageView
         android:id="@+id/mensajeFoto"
         android:layout_width="match_parent"
         android:layout_height="227dp"
         android:adjustViewBounds="false"
+        android:scaleType="centerCrop"
         app:srcCompat="@drawable/foto" />
 
     <TextView
@@ -23,13 +23,6 @@
         android:textSize="24sp" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Titulo: "
-        android:textColor="@color/common_google_signin_btn_text_dark_pressed" />
-
-    <TextView
         android:id="@+id/txtTitulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,13 +31,6 @@
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         android:textSize="24sp"
         android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Descripcion: "
-        android:textColor="@color/common_google_signin_btn_text_dark_pressed" />
 
     <TextView
         android:id="@+id/txtDescripcion"
