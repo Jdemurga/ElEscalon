@@ -31,6 +31,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.text.DecimalFormat;
 import java.util.Iterator;
 
@@ -83,7 +84,12 @@ public class vecino extends AppCompatActivity {
                 edades[0] = dataSnapshot.child("edad").getValue(Integer.class);
                 otro[0] = dataSnapshot.child("otros").getValue(String.class);
                 name.setText(nombre[0]);
-                calle.setText(calles[0]);
+                if(calles[0].equals("")){
+                    calle.setText(R.string.noDireccion);
+
+                }else{
+                    calle.setText(calles[0]);
+                }
                 otros.setText(otro[0]);
                 edad.setText("" + edades[0]);
                 otros.setMovementMethod(ScrollingMovementMethod.getInstance());
@@ -113,7 +119,8 @@ public class vecino extends AppCompatActivity {
                 DecimalFormat df= new DecimalFormat("#0.00");
                 String numeroConFormato= df.format(media);
                 valor.setText(numeroConFormato);
-                nvalor.setText(""+(int)(numerovaloracion)+" valoraciones");
+
+                nvalor.setText(""+ (int)(numerovaloracion)+" "+ getResources().getString(R.string.valorString));
             }
 
             @Override
@@ -175,7 +182,7 @@ public class vecino extends AppCompatActivity {
                                         DecimalFormat dcf= new DecimalFormat("#0.00");
                                         String numeroFormato= dcf.format(media);
                                         valor.setText(numeroFormato);
-                                        nvalor.setText(""+(int)(numerovaloracion+1)+" valoraciones");
+                                        nvalor.setText(""+ (int)(numerovaloracion)+" "+ getResources().getString(R.string.valorString));
                                     }
 
 
