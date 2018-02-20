@@ -13,15 +13,19 @@ public class Mensaje {
     protected String titulo;
     protected String msm;
     protected long id;
-
-    public Mensaje(Bitmap foto, String titulo, String msm) {
+    protected  String correo;
+    public Mensaje(Bitmap foto, String titulo, String msm,String correo) {
         super();
         this.foto = foto;
         this.titulo = titulo;
         this.msm = msm;
+        this.correo=correo;
     }
 
 
+    public String getCorreo() {
+        return correo;
+    }
 
     public Bitmap getFoto() {
         return foto;

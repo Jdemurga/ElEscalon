@@ -58,7 +58,7 @@ import static android.app.Activity.RESULT_OK;
 public class perfil extends Fragment {
     View vista;
     Spinner edad, comunidad;
-    ImageView ver, foto;
+    ImageView ver, foto,mensajesCorreo;
     TextView contra, correoE;
     EditText otros, name, calle;
     String correo;
@@ -85,6 +85,17 @@ public class perfil extends Fragment {
             foto = (ImageView) vista.findViewById(R.id.Pfoto);
             b = getArguments();
             correo = b.getString("correo");
+            mensajesCorreo=(ImageView)vista.findViewById(R.id.correoMensaje);
+            mensajesCorreo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(vista.getContext(), chatear.class);
+                    String corre = correo.replace(".", ",");
+                    intent.putExtra("correo", corre);
+                    startActivity(intent);
+                }
+            });
+
             ArrayList<Integer> edades = new ArrayList();
             for (int i = 0; i < 85; i++) {
                 int num = i + 15;

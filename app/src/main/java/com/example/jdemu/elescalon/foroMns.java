@@ -37,7 +37,11 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by jdemu on 18/01/2018.
@@ -73,7 +77,7 @@ public class foroMns extends Fragment {
             comuni = b.getString("comuni");
             correo = b.getString("correo");
             b.remove("numPag");
-            b.putInt("numPag",3);
+            b.putInt("numPag", 3);
             llaves();
             cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -216,7 +220,7 @@ public class foroMns extends Fragment {
                                         desci = see[0];
                                     }
                                 }
-                                mns = new Mensaje(bit, titu, desci);
+                                mns = new Mensaje(bit, titu, desci, email);
                                 mensajes.add(mns);
                                 adaptadorForo = new adaptadorForo(getActivity(), mensajes);
                                 foross.setAdapter(adaptadorForo);
@@ -263,7 +267,7 @@ public class foroMns extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 final String[] nom = new String[1];
-                nom[0]="";
+                nom[0] = "";
                 Iterator<DataSnapshot> hijos = dataSnapshot.getChildren().iterator();
                 while (hijos.hasNext()) {
                     DataSnapshot dato = (DataSnapshot) hijos.next();
@@ -295,8 +299,61 @@ public class foroMns extends Fragment {
 
             }
         });
+        responder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(vista.getContext());
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                final View dialogView = inflater.inflate(R.layout.responderauser, null);
+                dialogBuilder.setView(dialogView);
+                final EditText respuesta = (EditText) dialogView.findViewById(R.id.editResponderr);
+                dialogBuilder.setTitle("Responder");
+                dialogBuilder.setMessage("Introduzca su respuesta");
+                dialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        if (!(String.valueOf(respuesta.getText()).equals(""))) {
+                            final DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+                            final Map<String, String> mapa = new HashMap<String, String>();
+                            mapa.put("usuario", "yo");
+                            mapa.put("mensaje", String.valueOf(respuesta.getText()));
+                            final Map<String, String> mapa2 = new HashMap<String, String>();
+                            DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("usuarios").child(correo);
+                            dbrf.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    String nombre = dataSnapshot.child("nombre").getValue(String.class);
+                                    mapa2.put("usuario", nombre);
+                                    mapa2.put("mensaje", String.valueOf(respuesta.getText()));
+                                    reference.child("mensajes").child(correo).child(mensaje.getCorreo()).push().setValue(mapa);
+                                    DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference();
+                                    reference2.child("mensajes").child(mensaje.getCorreo()).child(correo).push().setValue(mapa2);
 
-        builder.create().show();
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                    }
+                });
+                dialogBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener()
+
+                {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //pass
+                    }
+                });
+                AlertDialog b = dialogBuilder.create();
+                b.show();
+
+
+            }
+        });
+        builder.create().
+
+                show();
     }
 
 }

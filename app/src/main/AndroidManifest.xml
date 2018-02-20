@@ -38,7 +38,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".vecino"></activity>
+        <activity
+            android:name=".vecino"
+            android:label="@string/title_activity_perfil_vecino"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".chatear"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateUnchanged|adjustResize"
+            ></activity>
     </application>
 
 </manifest>
