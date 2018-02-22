@@ -118,6 +118,7 @@ public class Participantes extends Fragment {
                     Intent intent = new Intent(vista.getContext(), vecino.class);
                     intent.putExtra("Ucorreo", Ucorreo);
                     intent.putExtra("comunidadA",comuni);
+                    intent.putExtra("micorreo",correo);
                     startActivity(intent);
                 }
             });

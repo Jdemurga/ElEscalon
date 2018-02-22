@@ -40,7 +40,7 @@ public class vecino extends AppCompatActivity {
     TextView name, edad, calle, correo, valor, nvalor,otros;
     ImageView valorar;
     String Ucorreo;
-    String comunida;
+    String comunida,micorreo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +57,14 @@ public class vecino extends AppCompatActivity {
         otros = (TextView) findViewById(R.id.pvotros);
         Ucorreo = getIntent().getExtras().getString("Ucorreo");
         comunida = getIntent().getExtras().getString("comunidadA");
+        micorreo=getIntent().getExtras().getString("micorreo");
         correo.setText(Ucorreo);
         cargarFoto();
         leerDatos();
+        if(micorreo.equals(Ucorreo)){
+            valorar.setEnabled(false);
+            valorar.setVisibility(View.INVISIBLE);
+        }
         valorar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
