@@ -1,19 +1,27 @@
 package com.example.jdemu.elescalon;
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TabWidget;
 import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -45,6 +53,7 @@ public class chat extends Fragment {
     Bitmap fotillo;
     String nombreAmigo, correoAmigo, micorreo;
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable final ViewGroup container, Bundle savedInstanceState) {
@@ -54,6 +63,7 @@ public class chat extends Fragment {
         } else {
             vista = inflater.inflate(R.layout.chat, container, false);
             ly = (LinearLayout) vista.findViewById(R.id.mensajes);
+            ly.setFocusable(false);
             envio = (EditText) vista.findViewById(R.id.escritu);
             enviar = (ImageView) vista.findViewById(R.id.envio);
             idNombre = (TextView) vista.findViewById(R.id.idNombre);
@@ -61,7 +71,7 @@ public class chat extends Fragment {
             scrollView = (ScrollView) vista.findViewById(R.id.deslizantw);
             b = getArguments();
             b.remove("numPag");
-            b.putInt("numPag",8);
+            b.putInt("numPag", 8);
             micorreo = b.getString("correo");
             correoAmigo = b.getString("amigo");
             nombreAmigo = b.getString("nameAmigo");
@@ -69,6 +79,18 @@ public class chat extends Fragment {
             fotillo = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
             idNombre.setText(nombreAmigo);
             idfoto.setImageBitmap(fotillo);
+            envio.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean b) {
+                    if (b) {
+                        enviar.setColorFilter(ContextCompat.getColor(getActivity(), R.color.colorAccent), android.graphics.PorterDuff.Mode.MULTIPLY);
+                    } else {
+                        enviar.setColorFilter(ContextCompat.getColor(getActivity(), R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY);
+                        closeSoftKeyBoard();
+
+                    }
+                }
+            });
             enviar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -110,9 +132,9 @@ public class chat extends Fragment {
                     String message = map.get("mensaje").toString();
                     String userName = map.get("usuario").toString();
                     if (userName.equals("yo")) {
-                        addMessageBox(" You: \n " + message+ " ", 1);
+                        addMessageBox( message , 1);
                     } else {
-                        addMessageBox(" "+nombreAmigo + ":\n " + message+ " ", 2);
+                        addMessageBox( message, 2);
 
 
                     }
@@ -140,28 +162,44 @@ public class chat extends Fragment {
 
                 }
             });
-            scrollView.fullScroll(View.FOCUS_DOWN);
         }
         return vista;
     }
 
+    @SuppressLint({"ResourceAsColor", "NewApi"})
     public void addMessageBox(String message, int type) {
         TextView textView = new TextView(getActivity());
         textView.setText(message);
         textView.setTextColor(Color.WHITE);
-
+        textView.setTextSize(18);
+        textView.setMaxWidth(600);
         LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         lp2.weight = 1.0f;
 
         if (type == 1) {
             lp2.gravity = Gravity.RIGHT;
-            textView.setBackgroundResource(R.drawable.bubble_in);
+            textView.setBackground(getResources().getDrawable(R.drawable.redonde3));
+            textView.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#5EB7A7")));
+            lp2.setMargins(2, 4, 2, 3);
+
         } else {
             lp2.gravity = Gravity.LEFT;
-            textView.setBackgroundResource(R.drawable.bubble_out);
+            textView.setBackground(getResources().getDrawable(R.drawable.redonde3));
+            textView.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#00796b")));
+            lp2.setMargins(2, 4, 2, 3);
         }
         textView.setLayoutParams(lp2);
         ly.addView(textView);
-        scrollView.fullScroll(View.FOCUS_DOWN);
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+            }
+        });
+    }
+
+    public void closeSoftKeyBoard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(vista.getWindowToken(), 0);
     }
 }

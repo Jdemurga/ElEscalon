@@ -1,6 +1,8 @@
 package com.example.jdemu.elescalon;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -107,6 +109,36 @@ public class listaChat extends Fragment {
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     Usuario user= (Usuario) listaChat.getItemAtPosition(i);
                     ((chatear)getActivity()).Chat(user);
+                }
+            });
+            listaChat.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    final Usuario u= (Usuario) listaChat.getItemAtPosition(i);
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                    builder.setTitle("Borrar mensajes")
+                            .setMessage("Desea borrar su conversacion con "+u.getCorreo())
+                            .setPositiveButton("ACEPTAR",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("mensajes").child(correo).child(u.getCorreo());
+                                            dbrf.removeValue();
+                                            llaves();
+
+                                        }
+                                    })
+                            .setNegativeButton("CANCELAR",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                        }
+                                    });
+                    builder.create().show();
+
+                    return true;
                 }
             });
         }
