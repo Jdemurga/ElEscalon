@@ -13,13 +13,19 @@ public class Mensaje {
     protected String titulo;
     protected String msm;
     protected long id;
-    protected  String correo;
-    public Mensaje(Bitmap foto, String titulo, String msm,String correo) {
+    protected long fecha;
+
+    protected String correo;
+
+
+    public Mensaje(Bitmap foto, String titulo, String msm, String correo, long fecha) {
         super();
         this.foto = foto;
         this.titulo = titulo;
         this.msm = msm;
-        this.correo=correo;
+        this.correo = correo;
+        this.fecha = fecha;
+
     }
 
 
@@ -44,5 +50,8 @@ public class Mensaje {
         return id;
     }
 
+    public long getFecha() {
+        return fecha;
+    }
 
 }

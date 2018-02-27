@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.InputType;
 import android.view.LayoutInflater;
@@ -16,17 +17,27 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ServerValue;
+
+import java.net.ServerSocket;
+
 /**
  * Created by jdemu on 15/01/2018.
  */
 
 public class login extends Fragment {
     View vista;
-    EditText nombre,contra;
+    EditText nombre, contra;
     ImageView ver;
     Button log;
     TextView reg;
     Bundle b;
+    FirebaseAuth fauth = FirebaseAuth.getInstance();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -35,14 +46,14 @@ public class login extends Fragment {
             parent.removeView(vista);
         } else {
             vista = inflater.inflate(R.layout.login, container, false);
-            nombre=(EditText) vista.findViewById(R.id.nombre);
+            nombre = (EditText) vista.findViewById(R.id.nombre);
             b = getArguments();
             b.remove("numPag");
-            b.putInt("numPag",0);
-            contra=(EditText)vista.findViewById(R.id.contra);
-            ver=(ImageView)vista.findViewById(R.id.ver);
-            log=(Button)vista.findViewById(R.id.log);
-            reg=(TextView) vista.findViewById(R.id.reg);
+            b.putInt("numPag", 0);
+            contra = (EditText) vista.findViewById(R.id.contra);
+            ver = (ImageView) vista.findViewById(R.id.ver);
+            log = (Button) vista.findViewById(R.id.log);
+            reg = (TextView) vista.findViewById(R.id.reg);
             String carpetaFuente = "fonts/Letters for Learners.ttf";
             final Typeface fuente = Typeface.createFromAsset(getActivity().getAssets(), carpetaFuente);
             nombre.setTypeface(fuente);
@@ -52,7 +63,7 @@ public class login extends Fragment {
             ver.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    switch ( event.getAction() ) {
+                    switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
                             contra.setInputType(InputType.TYPE_CLASS_TEXT);
                             contra.setSelection(contra.getText().length());
@@ -71,21 +82,40 @@ public class login extends Fragment {
             reg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ((MainActivity)getActivity()).pRegis();
+                    ((MainActivity) getActivity()).pRegis();
                 }
             });
             log.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(!(String.valueOf(nombre.getText()).equals("")||String.valueOf(contra.getText()).equals(""))){
-                        ((MainActivity)getActivity()).login(String.valueOf(nombre.getText()),String.valueOf(contra.getText()));
-                    }else{
+                    if (!(String.valueOf(nombre.getText()).equals("") || String.valueOf(contra.getText()).equals(""))) {
+                        login(String.valueOf(nombre.getText()), String.valueOf(contra.getText()));
+
+                    } else {
                         Toast.makeText(vista.getContext(), "Compruebe que los campos no esten vacios", Toast.LENGTH_SHORT).show();
 
                     }
                 }
             });
         }
-            return vista;
+        return vista;
+    }
+
+    public void login(String email, String password) {
+        final String hot = email;
+        fauth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(vista.getContext(), "Se ha iniciado correctamente", Toast.LENGTH_SHORT).show();
+                    ((MainActivity) getActivity()).iniciar(hot);
+                    nombre.setText("");
+                    contra.setText("");
+                } else {
+                    Toast.makeText(vista.getContext(), "No se ha podido iniciar", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
 }

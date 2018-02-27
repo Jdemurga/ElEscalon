@@ -126,21 +126,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void login(String email, String password) {
-        final String hot = email;
-        fauth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Se ha iniciado correctamente", Toast.LENGTH_SHORT).show();
-                    iniciar(hot);
-                } else {
-                    Toast.makeText(getApplicationContext(), "No se ha podido iniciar", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
-    }
 
     private static final String ALGORITHM = "AES";
     private static final String KEY = "1Hbfh667adfDEJ78";

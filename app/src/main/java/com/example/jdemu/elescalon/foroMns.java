@@ -5,12 +5,14 @@ import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -30,6 +32,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
@@ -39,10 +42,15 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
+import static java.lang.Thread.sleep;
 
 /**
  * Created by jdemu on 18/01/2018.
@@ -61,6 +69,7 @@ public class foroMns extends Fragment {
     ArrayList<Mensaje> mensajes = new ArrayList<>();
     Mensaje mns;
     String name = "";
+    SwipeRefreshLayout swipe;
 
     @Nullable
     @Override
@@ -79,6 +88,17 @@ public class foroMns extends Fragment {
             correo = b.getString("correo");
             b.remove("numPag");
             b.putInt("numPag", 3);
+            swipe = (SwipeRefreshLayout)vista.findViewById(R.id.swiperefresh);
+            swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    swipe.setRefreshing(true);
+                    swipe.setNestedScrollingEnabled(false);
+                    swipe.setEnabled(false);
+
+                    llaves();
+                }
+            });
             llaves();
             cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -168,9 +188,12 @@ public class foroMns extends Fragment {
 
     public void subirCom(String nombreCom, String tit, String desc) {
         DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("comunidades").child(nombreCom);
+
         dbrf.child("Foro").child(correo).push();
         dbrf.child("Foro").child(correo).child("Titulo").push();
         dbrf.child("Foro").child(correo).child("Titulo").setValue(tit);
+        dbrf.child("Foro").child(correo).child("Fecha").push();
+        dbrf.child("Foro").child(correo).child("Fecha").setValue(""+new Date().getTime());
         dbrf.child("Foro").child(correo).child("Descripcion").push();
         dbrf.child("Foro").child(correo).child("Descripcion").setValue(desc);
         llaves();
@@ -187,14 +210,18 @@ public class foroMns extends Fragment {
                 ArrayList<String> emails = new ArrayList();
                 final ArrayList<String> titulos = new ArrayList<>();
                 final ArrayList<String> descriptions = new ArrayList<>();
+                final ArrayList<String> fechas = new ArrayList<>();
                 Iterator<DataSnapshot> hijos = dataSnapshot.getChildren().iterator();
                 while (hijos.hasNext()) {
                     DataSnapshot dato = (DataSnapshot) hijos.next();
                     String h = dato.getKey();
                     String titulo = (String) dato.child("Titulo").getValue();
                     String description = (String) dato.child("Descripcion").getValue();
+                    String fecha=(String)dato.child("Fecha").getValue();
                     titulos.add(titulo + "dataname" + h);
                     descriptions.add(description + "dataname" + h);
+                    fechas.add(fecha + "dataname" + h);
+
                     emails.add(h);
                 }
                 for (int i = 0; i < emails.size(); i++) {
@@ -208,6 +235,7 @@ public class foroMns extends Fragment {
                                 Bitmap bit = BitmapFactory.decodeFile(localFile.getAbsolutePath());
                                 String titu = "";
                                 String desci = "";
+                                long fech = 0;
                                 String email = storageRef.getName();
                                 for (int j = 0; j < titulos.size(); j++) {
                                     String[] ver = titulos.get(j).split("dataname");
@@ -221,8 +249,20 @@ public class foroMns extends Fragment {
                                         desci = see[0];
                                     }
                                 }
-                                mns = new Mensaje(bit, titu, desci, email);
+                                for (int z = 0; z < descriptions.size(); z++) {
+                                    String[] see = fechas.get(z).split("dataname");
+                                    if (see[1].equals(email)) {
+                                        fech = Long.parseLong(see[0]);
+                                    }
+                                }
+                                mns = new Mensaje(bit, titu, desci, email,fech);
                                 mensajes.add(mns);
+                                Collections.sort(mensajes, new Comparator<Mensaje>() {
+                                    @Override
+                                    public int compare(Mensaje mensaje, Mensaje t1) {
+                                        return new Long(t1.getFecha()).compareTo(new Long(mensaje.getFecha()));
+                                    }
+                                });
                                 adaptadorForo = new adaptadorForo(getActivity(), mensajes);
                                 foross.setAdapter(adaptadorForo);
                             }
@@ -235,6 +275,20 @@ public class foroMns extends Fragment {
                     } catch (IOException e) {
 
                     }
+                    int a =i + 1;
+                    //aceptamos barco...por ahora
+                    if(a==emails.size()){
+                        try {
+                            sleep(950);
+                            swipe.setRefreshing(false);
+                            swipe.setNestedScrollingEnabled(true);
+                            swipe.setEnabled(true);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    }
                 }
 
             }
@@ -243,6 +297,7 @@ public class foroMns extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+
     }
 
     @SuppressLint("NewApi")
@@ -301,7 +356,7 @@ public class foroMns extends Fragment {
 
             }
         });
-        if(correo.equals(mensaje.getCorreo())){
+        if (correo.equals(mensaje.getCorreo())) {
             responder.setText("Borrar");
             responder.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -333,7 +388,7 @@ public class foroMns extends Fragment {
                 }
             });
 
-        }else{
+        } else {
             responder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -387,7 +442,6 @@ public class foroMns extends Fragment {
                 }
             });
         }
-
 
 
     }
