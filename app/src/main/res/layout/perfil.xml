@@ -267,7 +267,7 @@
 
     <EditText
         android:id="@+id/Potros"
-        android:layout_width="243dp"
+        android:layout_width="310dp"
         android:layout_height="68dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
@@ -315,7 +315,7 @@
 
     <EditText
         android:id="@+id/Pcalle"
-        android:layout_width="229dp"
+        android:layout_width="310dp"
         android:layout_height="41dp"
         android:ems="10"
         android:inputType="textLongMessage|textPersonName"

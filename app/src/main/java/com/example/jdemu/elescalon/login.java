@@ -1,6 +1,5 @@
 package com.example.jdemu.elescalon;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -21,9 +20,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ServerValue;
-
-import java.net.ServerSocket;
 
 /**
  * Created by jdemu on 15/01/2018.
@@ -46,7 +42,7 @@ public class login extends Fragment {
             parent.removeView(vista);
         } else {
             vista = inflater.inflate(R.layout.login, container, false);
-            nombre = (EditText) vista.findViewById(R.id.nombre);
+            nombre = (EditText) vista.findViewById(R.id.correoEmail);
             b = getArguments();
             b.remove("numPag");
             b.putInt("numPag", 0);
