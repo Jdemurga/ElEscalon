@@ -65,6 +65,8 @@ public class Participantes extends Fragment {
             gv = (GridView) vista.findViewById(R.id.gri);
             search = (TextView) vista.findViewById(R.id.search2);
             cancel = (ImageView) vista.findViewById(R.id.cancel4);
+            cancel.setEnabled(false);
+            cancel.setVisibility(View.INVISIBLE);
             b = getArguments();
             comuni = b.getString("comuni");
             correo = b.getString("correo");
@@ -74,6 +76,8 @@ public class Participantes extends Fragment {
                 @Override
                 public void onClick(View v) {
                     search.setText("");
+                    cancel.setEnabled(false);
+                    cancel.setVisibility(View.INVISIBLE);
                 }
             });
             partc();
@@ -100,9 +104,13 @@ public class Participantes extends Fragment {
                         }
                         adaptadorParticipantes = new adaptadorParticipantes(getActivity(), buscado);
                         gv.setAdapter(adaptadorParticipantes);
+                        cancel.setEnabled(true);
+                        cancel.setVisibility(View.VISIBLE);
                     } else {
                         adaptadorParticipantes = new adaptadorParticipantes(getActivity(), usuaruios);
                         gv.setAdapter(adaptadorParticipantes);
+                        cancel.setEnabled(false);
+                        cancel.setVisibility(View.INVISIBLE);
                     }
                 }
 

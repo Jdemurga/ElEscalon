@@ -82,6 +82,8 @@ public class foroMns extends Fragment {
             foross = (ListView) vista.findViewById(R.id.lvForo);
             search = (TextView) vista.findViewById(R.id.search);
             cancel = (ImageView) vista.findViewById(R.id.cancel3);
+            cancel.setEnabled(false);
+            cancel.setVisibility(View.INVISIBLE);
             fab = (FloatingActionButton) vista.findViewById(R.id.faMensaje);
             b = getArguments();
             comuni = b.getString("comuni");
@@ -104,6 +106,8 @@ public class foroMns extends Fragment {
                 @Override
                 public void onClick(View v) {
                     search.setText("");
+                    cancel.setEnabled(false);
+                    cancel.setVisibility(View.INVISIBLE);
                 }
             });
             search.addTextChangedListener(new TextWatcher() {
@@ -130,10 +134,13 @@ public class foroMns extends Fragment {
                         }
                         adaptadorForo = new adaptadorForo(getActivity(), buscado);
                         foross.setAdapter(adaptadorForo);
-
+                        cancel.setEnabled(true);
+                        cancel.setVisibility(View.VISIBLE);
                     } else {
                         adaptadorForo = new adaptadorForo(getActivity(), mensajes);
                         foross.setAdapter(adaptadorForo);
+                        cancel.setEnabled(false);
+                        cancel.setVisibility(View.INVISIBLE);
                     }
                 }
 

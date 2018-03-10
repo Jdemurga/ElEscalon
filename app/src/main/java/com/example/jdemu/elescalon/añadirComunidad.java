@@ -53,6 +53,8 @@ public class añadirComunidad extends Fragment {
             fab = (FloatingActionButton) vista.findViewById(R.id.fab);
             txt = (EditText) vista.findViewById(R.id.txtBus2);
             cancel = (ImageView) vista.findViewById(R.id.cancel2);
+            cancel.setEnabled(false);
+            cancel.setVisibility(View.INVISIBLE);
             b = getArguments();
             correo = b.getString("correo");
             comunidades = new ArrayList();
@@ -67,6 +69,13 @@ public class añadirComunidad extends Fragment {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     añadirComunidad.this.adapter.getFilter().filter(s);
+                    if(!s.equals("")){
+                        cancel.setEnabled(true);
+                        cancel.setVisibility(View.VISIBLE);
+                    }else{
+                        cancel.setEnabled(false);
+                        cancel.setVisibility(View.INVISIBLE);
+                    }
                 }
 
                 @Override
@@ -78,6 +87,8 @@ public class añadirComunidad extends Fragment {
                 @Override
                 public void onClick(View v) {
                     txt.setText("");
+                    cancel.setEnabled(false);
+                    cancel.setVisibility(View.INVISIBLE);
                 }
             });
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {

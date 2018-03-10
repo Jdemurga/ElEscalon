@@ -53,6 +53,8 @@ public class Miscomunidades extends Fragment {
             vista = inflater.inflate(R.layout.comunidad, container, false);
             lv = (ListView) vista.findViewById(R.id.Miscomunidades);
             borrar = (ImageView) vista.findViewById(R.id.cancel);
+            borrar.setEnabled(false);
+            borrar.setVisibility(View.INVISIBLE);
             buscar = (ImageView) vista.findViewById(R.id.lupa);
             b = getArguments();
             correo = b.getString("correo");
@@ -69,6 +71,13 @@ public class Miscomunidades extends Fragment {
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     Miscomunidades.this.adapter.getFilter().filter(s);
+                    if(!s.equals("")){
+                        borrar.setEnabled(true);
+                        borrar.setVisibility(View.VISIBLE);
+                    }else{
+                        borrar.setEnabled(false);
+                        borrar.setVisibility(View.INVISIBLE);
+                    }
                 }
 
                 @Override
@@ -80,6 +89,8 @@ public class Miscomunidades extends Fragment {
                 @Override
                 public void onClick(View v) {
                     texto.setText("");
+                    borrar.setEnabled(false);
+                    borrar.setVisibility(View.INVISIBLE);
                 }
             });
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {

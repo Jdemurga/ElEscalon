@@ -58,6 +58,8 @@ public class listaChat extends Fragment {
             vista = inflater.inflate(R.layout.listachat, container, false);
             search = (TextView) vista.findViewById(R.id.txtBus3);
             cancel = (ImageView) vista.findViewById(R.id.cancel5);
+            cancel.setEnabled(false);
+            cancel.setVisibility(View.INVISIBLE);
             listaChat=(ListView) vista.findViewById(R.id.lvChat);
             b=getArguments();
             correo=b.getString("correo");
@@ -68,6 +70,8 @@ public class listaChat extends Fragment {
                 @Override
                 public void onClick(View v) {
                     search.setText("");
+                    cancel.setEnabled(false);
+                    cancel.setVisibility(View.INVISIBLE);
                 }
             });
             search.clearFocus();
@@ -95,10 +99,13 @@ public class listaChat extends Fragment {
                         }
                         adaptadorChat = new adaptadorListaChat(getActivity(), buscado);
                         listaChat.setAdapter(adaptadorChat);
-
+                        cancel.setEnabled(true);
+                        cancel.setVisibility(View.VISIBLE);
                     } else {
                         adaptadorChat = new adaptadorListaChat(getActivity(), usuarios);
                         listaChat.setAdapter(adaptadorChat);
+                        cancel.setEnabled(false);
+                        cancel.setVisibility(View.INVISIBLE);
                     }
                 }
 
