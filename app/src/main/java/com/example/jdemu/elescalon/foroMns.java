@@ -357,15 +357,15 @@ public class foroMns extends Fragment {
             }
         });
         if (correo.equals(mensaje.getCorreo())) {
-            responder.setText("Borrar");
+            responder.setText(vista.getResources().getString(R.string.Borrar));
             responder.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-                    builder.setTitle("Borrar comunidad")
-                            .setMessage("Desea borrar su mensaje de su foro")
-                            .setPositiveButton("ACEPTAR",
+                    builder.setTitle(vista.getResources().getString(R.string.Borrarm))
+                            .setMessage(vista.getResources().getString(R.string.Borrarmf))
+                            .setPositiveButton(vista.getResources().getString(R.string.acep),
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -376,7 +376,7 @@ public class foroMns extends Fragment {
 
                                         }
                                     })
-                            .setNegativeButton("CANCELAR",
+                            .setNegativeButton(vista.getResources().getString(R.string.cancel),
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -393,13 +393,14 @@ public class foroMns extends Fragment {
                 @Override
                 public void onClick(View view) {
                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(vista.getContext());
+
                     LayoutInflater inflater = getActivity().getLayoutInflater();
                     final View dialogView = inflater.inflate(R.layout.responderauser, null);
                     dialogBuilder.setView(dialogView);
                     final EditText respuesta = (EditText) dialogView.findViewById(R.id.editResponderr);
-                    dialogBuilder.setTitle("Responder");
-                    dialogBuilder.setMessage("Introduzca su respuesta");
-                    dialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+
+                    dialogBuilder.setTitle(vista.getResources().getString(R.string.Responder));
+                    dialogBuilder.setPositiveButton(vista.getResources().getString(R.string.acep), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
                             if (!(String.valueOf(respuesta.getText()).equals(""))) {
                                 final DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
@@ -418,6 +419,7 @@ public class foroMns extends Fragment {
                                         DatabaseReference reference2 = FirebaseDatabase.getInstance().getReference();
                                         reference2.child("mensajes").child(mensaje.getCorreo()).child(correo).push().setValue(mapa2);
 
+
                                     }
 
                                     @Override
@@ -425,10 +427,11 @@ public class foroMns extends Fragment {
 
                                     }
                                 });
+                                ad.dismiss();
                             }
                         }
                     });
-                    dialogBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener()
+                    dialogBuilder.setNegativeButton(vista.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener()
 
                     {
                         public void onClick(DialogInterface dialog, int whichButton) {

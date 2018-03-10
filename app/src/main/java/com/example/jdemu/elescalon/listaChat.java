@@ -70,6 +70,8 @@ public class listaChat extends Fragment {
                     search.setText("");
                 }
             });
+            search.clearFocus();
+
             search.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -117,9 +119,9 @@ public class listaChat extends Fragment {
                     final Usuario u= (Usuario) listaChat.getItemAtPosition(i);
                     final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-                    builder.setTitle("Borrar mensajes")
-                            .setMessage("Desea borrar su conversacion con "+u.getCorreo())
-                            .setPositiveButton("ACEPTAR",
+                    builder.setTitle(vista.getResources().getString(R.string.Borrarm))
+                            .setMessage(vista.getResources().getString(R.string.Borrarcv)+u.getCorreo()+"?")
+                            .setPositiveButton(vista.getResources().getString(R.string.acep),
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
@@ -129,7 +131,7 @@ public class listaChat extends Fragment {
 
                                         }
                                     })
-                            .setNegativeButton("CANCELAR",
+                            .setNegativeButton(vista.getResources().getString(R.string.cancel),
                                     new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {

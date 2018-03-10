@@ -9,14 +9,14 @@
         android:id="@+id/edit3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Titulo"
+        android:hint="@string/titulo"
         android:inputType="text" />
 
     <EditText
         android:id="@+id/edit4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Mensaje"
+        android:hint="@string/Mensaje"
         android:inputType="text" />
 
 </LinearLayout>

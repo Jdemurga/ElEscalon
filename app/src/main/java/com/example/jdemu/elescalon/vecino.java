@@ -96,7 +96,7 @@ public class vecino extends AppCompatActivity {
                     calle.setText(calles[0]);
                 }
                 otros.setText(otro[0]);
-                edad.setText("" + edades[0]);
+                edad.setText(edades[0]+getResources().getString(R.string.Años));
                 otros.setMovementMethod(ScrollingMovementMethod.getInstance());
                 otros.setScrollBarStyle(0x03000000);
                 otros.setVerticalScrollBarEnabled(true);
@@ -164,9 +164,8 @@ public class vecino extends AppCompatActivity {
         builder.setView(v);
         final RatingBar rb = (RatingBar)v.findViewById(R.id.ratingBar);
 
-        builder.setTitle("Valorar")
-                .setMessage("El Mensaje para el usuario")
-                .setPositiveButton("OK",
+        builder.setTitle(getResources().getString(R.string.valore))
+                .setPositiveButton(getResources().getString(R.string.acep),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -198,7 +197,7 @@ public class vecino extends AppCompatActivity {
                                 });
                             }
                         })
-                .setNegativeButton("CANCELAR",
+                .setNegativeButton(getResources().getString(R.string.cancel),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

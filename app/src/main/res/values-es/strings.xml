@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">El Escalon</string>
     <string name="title_home">Comunidades</string>
@@ -15,7 +16,6 @@
     <string name="busqueda">Buscar</string>
     <string name="mensaje">Escribir mensaje</string>
     <string name="nombre">Nombre</string>
-    <string name="nombre2">Nombre :</string>
     <string name="correo">Correo</string>
     <string name="Contraseña">Contraseña</string>
     <string name="Login">Login</string>
@@ -32,21 +32,19 @@
     <string name="mail">Email</string>
     <string name="repContraseña">Repetir contraseña</string>
     <string name="reg">Registro</string>
+    <string name="nombre2">Nombre :</string>
     <string name="acep">ACEPTAR</string>
     <string name="cancel">CANCELAR</string>
-    <string name="Borrar">Borrar</string>
-    <string name="Años"> años</string>
     <string name="Borrarm">Borrar mensaje</string>
-    <string name="Borrarc">Borrar comunidad</string>
-    <string name="Borrarcv">¿Desea borrar su conversacion con </string>
+    <string name="Borrarcv">"¿Desea borrar su conversacion con "</string>
     <string name="espera">Su foto esta cargando, espere por favor</string>
     <string name="seisletras">La contraseña debe tener 6 caracteres</string>
     <string name="compcon">Compruebe la contraseña</string>
     <string name="compmail">Compruebe el email</string>
     <string name="valore">Valore a su vecino</string>
-    <string name="compcamp">Compruebe que los campos no esten vacios</string>
-    <string name="Borrarmf">¿Desea borrar su mensaje del foro?</string>
+    <string name="Borrarc">Borrar comunidad</string>
     <string name="Borrarcm">"¿Desea borrar la comunidad "</string>
-
-
+    <string name="Borrarmf">¿Desea borrar su mensaje del foro?</string>
+    <string name="Borrar">Borrar</string>
+    <string name="Años">" años"</string>
 </resources>

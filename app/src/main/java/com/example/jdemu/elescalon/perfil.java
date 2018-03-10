@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -93,6 +94,8 @@ public class perfil extends Fragment {
                     String corre = correo.replace(".", ",");
                     intent.putExtra("correo", corre);
                     startActivity(intent);
+                    mensajesCorreo.setImageDrawable(getResources().getDrawable(R.drawable.nmensaje));
+
                 }
             });
 
@@ -203,6 +206,7 @@ public class perfil extends Fragment {
                 calle.setText(calles[0]);
                 correoE.setText((CharSequence) correo.replace(",","."));
                 otros.setText(otro[0]);
+                mensajeActivo();
                 try {
                     contra.setText(desencriptar(contraseña[0]));
                 } catch (Exception e) {
@@ -280,6 +284,37 @@ public class perfil extends Fragment {
 
         builder.create().show();
     }
+    public void mensajeActivo(){
+        DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("mensajes").child(correo);
+        dbrf.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                mensajesCorreo.setImageDrawable(vista.getResources().getDrawable(R.drawable.smensaje));
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                mensajesCorreo.setImageDrawable(vista.getResources().getDrawable(R.drawable.smensaje));
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+    }
 
     public void cargarFoto() {
         try {
@@ -307,20 +342,13 @@ public class perfil extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK) {
             final Uri uri = data.getData();
-            Toast.makeText(vista.getContext(), "Su foto esta cargando, espere por favor", Toast.LENGTH_SHORT).show();
+            Toast.makeText(vista.getContext(), vista.getResources().getString(R.string.espera), Toast.LENGTH_SHORT).show();
             StorageReference almacen = FirebaseStorage.getInstance().getReference();
             StorageReference img = almacen.child("images").child(correo);
             img.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(vista.getContext(), "Se ha subido", Toast.LENGTH_SHORT).show();
                     foto.setImageURI(uri);
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(vista.getContext(), "No se ha subido", Toast.LENGTH_SHORT).show();
-
                 }
             });
         } else if (requestCode == 2 && resultCode == RESULT_OK) {
@@ -333,15 +361,9 @@ public class perfil extends Fragment {
             StorageReference storageRef = storage.getReference();
             StorageReference imageRef = storageRef.child("images").child(correo);
             UploadTask uploadTask = imageRef.putBytes(imageData);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(vista.getContext(), "No se ha subido", Toast.LENGTH_SHORT).show();
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(vista.getContext(), "Se ha subido", Toast.LENGTH_SHORT).show();
                     foto.setImageBitmap(imageBitmap);
                 }
             });

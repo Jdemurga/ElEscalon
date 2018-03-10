@@ -46,7 +46,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="#F4F4F4"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,9 +58,10 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:backgroundTint="@color/colorPrimary"
+            android:background="@drawable/redondeo4"
+            android:backgroundTint="#D0D3D4"
             android:ems="10"
-            android:hint="Mensaje"
+            android:hint="@string/Mensaje"
             android:inputType="textPersonName" />
 
         <ImageView
@@ -69,6 +69,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@drawable/redondeo4"
+            android:backgroundTint="#D0D3D4"
             android:tint="@color/colorPrimary"
             app:srcCompat="@android:drawable/ic_menu_send" />
     </LinearLayout>

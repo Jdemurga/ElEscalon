@@ -88,7 +88,7 @@ public class login extends Fragment {
                         login(String.valueOf(nombre.getText()), String.valueOf(contra.getText()));
 
                     } else {
-                        Toast.makeText(vista.getContext(), "Compruebe que los campos no esten vacios", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(vista.getContext(), vista.getResources().getString(R.string.compcamp), Toast.LENGTH_SHORT).show();
 
                     }
                 }
@@ -103,12 +103,10 @@ public class login extends Fragment {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Toast.makeText(vista.getContext(), "Se ha iniciado correctamente", Toast.LENGTH_SHORT).show();
                     ((MainActivity) getActivity()).iniciar(hot);
                     nombre.setText("");
                     contra.setText("");
                 } else {
-                    Toast.makeText(vista.getContext(), "No se ha podido iniciar", Toast.LENGTH_SHORT).show();
                 }
             }
         });

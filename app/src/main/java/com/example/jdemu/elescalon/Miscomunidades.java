@@ -176,16 +176,16 @@ public class Miscomunidades extends Fragment {
     public void BorrarDialogo(final String comunidad) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle("Borrar comunidad")
-                .setMessage("Desea borrar la comunidad " + comunidad + " de su lista")
-                .setPositiveButton("ACEPTAR",
+        builder.setTitle(vista.getResources().getString(R.string.Borrarc))
+                .setMessage(vista.getResources().getString(R.string.Borrarcm) + comunidad + "?")
+                .setPositiveButton(vista.getResources().getString(R.string.acep),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 BorrarListas(comunidad);
                             }
                         })
-                .setNegativeButton("CANCELAR",
+                .setNegativeButton(vista.getResources().getString(R.string.cancel),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

@@ -13,6 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Mensaje"
+        android:hint="@string/Mensaje"
         android:inputType="textPersonName" />
 </LinearLayout>

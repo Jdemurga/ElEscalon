@@ -36,7 +36,7 @@ public class registro extends Fragment {
             registar = (Button) vista.findViewById(R.id.regis);
             b = getArguments();
             b.remove("numPag");
-            b.putInt("numPag",1);
+            b.putInt("numPag", 1);
             String carpetaFuente = "fonts/Letters for Learners.ttf";
             Typeface fuente = Typeface.createFromAsset(getActivity().getAssets(), carpetaFuente);
             nombre.setTypeface(fuente);
@@ -47,15 +47,22 @@ public class registro extends Fragment {
             registar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (String.valueOf(contra.getText()).equals(String.valueOf(repe.getText()))) {
-                        if (String.valueOf(contra.getText()).length() >= 6) {
-                            ((MainActivity) getActivity()).registrar(String.valueOf(nombre.getText()), String.valueOf(contra.getText()), String.valueOf(gmail.getText()));
-                        }else{
-                            Toast.makeText(vista.getContext(), "La contraseña debe tener 6 caracteres", Toast.LENGTH_SHORT).show();
-                        }
+                    if (!String.valueOf(gmail.getText()).equals("") && (String.valueOf(gmail.getText()).contains("@"))) {
 
-                    } else {
-                        Toast.makeText(vista.getContext(), "Compruebe la contraseña", Toast.LENGTH_SHORT).show();
+
+                        if (String.valueOf(contra.getText()).equals(String.valueOf(repe.getText()))) {
+                            if (String.valueOf(contra.getText()).length() >= 6) {
+                                ((MainActivity) getActivity()).registrar(String.valueOf(nombre.getText()), String.valueOf(contra.getText()), String.valueOf(gmail.getText()));
+                            } else {
+                                Toast.makeText(vista.getContext(), vista.getResources().getString(R.string.seisletras), Toast.LENGTH_SHORT).show();
+                            }
+
+                        } else {
+                            Toast.makeText(vista.getContext(), vista.getResources().getString(R.string.compcon), Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+                        Toast.makeText(vista.getContext(), vista.getResources().getString(R.string.compmail), Toast.LENGTH_SHORT).show();
+
                     }
                 }
             });

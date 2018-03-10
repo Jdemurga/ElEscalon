@@ -109,14 +109,14 @@ public class añadirComunidad extends Fragment {
 
         dialogBuilder.setTitle("Nuevo comunidad");
         dialogBuilder.setMessage("Introduzca los datos");
-        dialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+        dialogBuilder.setPositiveButton(vista.getResources().getString(R.string.acep), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 if (!(String.valueOf(edt.getText()).equals(""))) {
                     subirCom(String.valueOf(edt.getText()), String.valueOf(edt.getText()));
                 }
             }
         });
-        dialogBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+        dialogBuilder.setNegativeButton(vista.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 //pass
             }
@@ -215,15 +215,15 @@ public class añadirComunidad extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle("Añadir comunidad")
-                .setMessage("Desea añadir la comunidad "+comunidad+" a su lista")
-                .setPositiveButton("ACEPTAR",
+                .setMessage("¿Desea añadir la comunidad "+comunidad+"?")
+                .setPositiveButton(vista.getResources().getString(R.string.acep),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 añadirAMIs(comunidad);
                             }
                         })
-                .setNegativeButton("CANCELAR",
+                .setNegativeButton(vista.getResources().getString(R.string.cancel),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

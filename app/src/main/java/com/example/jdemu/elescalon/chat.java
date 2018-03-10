@@ -79,18 +79,6 @@ public class chat extends Fragment {
             fotillo = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
             idNombre.setText(nombreAmigo);
             idfoto.setImageBitmap(fotillo);
-            envio.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View view, boolean b) {
-                    if (b) {
-                        enviar.setColorFilter(ContextCompat.getColor(getActivity(), R.color.colorAccent), android.graphics.PorterDuff.Mode.MULTIPLY);
-                    } else {
-                        enviar.setColorFilter(ContextCompat.getColor(getActivity(), R.color.colorPrimary), android.graphics.PorterDuff.Mode.MULTIPLY);
-                        closeSoftKeyBoard();
-
-                    }
-                }
-            });
             enviar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -123,52 +111,53 @@ public class chat extends Fragment {
                     }
                 }
             });
-
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("mensajes").child(micorreo).child(correoAmigo);
-            reference.addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Map<String, String> map = (Map<String, String>) dataSnapshot.getValue();
-                    String message = map.get("mensaje").toString();
-                    String userName = map.get("usuario").toString();
-                    if (userName.equals("yo")) {
-                        addMessageBox( message , 1);
-                    } else {
-                        addMessageBox( message, 2);
+            mensajes();
 
 
-                    }
-
-                }
-
-
-                @Override
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
         }
         return vista;
     }
+    public void mensajes(){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("mensajes").child(micorreo).child(correoAmigo);
+        reference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Map<String, String> map = (Map<String, String>) dataSnapshot.getValue();
+                String message = map.get("mensaje").toString();
+                String userName = map.get("usuario").toString();
+                if (userName.equals("yo")) {
+                    addMessageBox( message , 1);
+                } else {
+                    addMessageBox( message, 2);
+                }
 
+            }
+
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
     @SuppressLint({"ResourceAsColor", "NewApi"})
     public void addMessageBox(String message, int type) {
-        TextView textView = new TextView(getActivity());
+        TextView textView = new TextView(vista.getContext());
         textView.setText(message);
         textView.setTextColor(Color.WHITE);
         textView.setTextSize(18);
@@ -178,13 +167,13 @@ public class chat extends Fragment {
 
         if (type == 1) {
             lp2.gravity = Gravity.RIGHT;
-            textView.setBackground(getResources().getDrawable(R.drawable.redonde3));
+            textView.setBackground(vista.getResources().getDrawable(R.drawable.redonde3));
             textView.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#5EB7A7")));
             lp2.setMargins(2, 4, 2, 3);
 
         } else {
             lp2.gravity = Gravity.LEFT;
-            textView.setBackground(getResources().getDrawable(R.drawable.redonde3));
+            textView.setBackground(vista.getResources().getDrawable(R.drawable.redonde3));
             textView.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#00796b")));
             lp2.setMargins(2, 4, 2, 3);
         }
@@ -198,8 +187,4 @@ public class chat extends Fragment {
         });
     }
 
-    public void closeSoftKeyBoard() {
-        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(vista.getWindowToken(), 0);
-    }
 }
