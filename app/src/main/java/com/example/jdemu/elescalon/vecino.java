@@ -58,7 +58,7 @@ public class vecino extends AppCompatActivity {
         Ucorreo = getIntent().getExtras().getString("Ucorreo");
         comunida = getIntent().getExtras().getString("comunidadA");
         micorreo=getIntent().getExtras().getString("micorreo");
-        correo.setText(Ucorreo);
+        correo.setText(Ucorreo.replace(',','.'));
         cargarFoto();
         leerDatos();
         if(micorreo.equals(Ucorreo)){
