@@ -95,7 +95,7 @@ public class añadirComunidad extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     String nombre = String.valueOf(lv.getItemAtPosition(position));
-                    añadirDialogo(nombre);
+                    leerListas(nombre);
 
                 }
             });
@@ -173,7 +173,7 @@ public class añadirComunidad extends Fragment {
                 nombres[0] = dataSnapshot.child("comunidades").getValue(String.class);
                 DatabaseReference dbf = FirebaseDatabase.getInstance().getReference().child("usuarios").child(correo);
                 if (!nombres[0].equals("")) {
-                    nombres[0] += ",";
+                    nombres[0] += ";";
                 }
                 dbf.child("comunidades").setValue(nombres[0] + nueva);
             }
@@ -204,7 +204,7 @@ public class añadirComunidad extends Fragment {
                 nombres[0] = dataSnapshot.child("comunidades").getValue(String.class);
                 DatabaseReference dbf = FirebaseDatabase.getInstance().getReference().child("usuarios").child(correo);
                 if (!nombres[0].equals("")) {
-                    nombres[0] += ",";
+                    nombres[0] += ";";
                 }
                 dbf.child("comunidades").setValue(nombres[0] + nueva);
             }
@@ -222,7 +222,7 @@ public class añadirComunidad extends Fragment {
     }
 
     public void añadirDialogo(final String comunidad) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(vista.getContext());
 
         builder.setTitle(vista.getResources().getString(R.string.AñadirC))
                 .setMessage(vista.getResources().getString(R.string.DesAñadc)+"\n"+comunidad)
@@ -243,5 +243,48 @@ public class añadirComunidad extends Fragment {
 
         builder.create().show();
     }
+    public void leerListas(final String cmp) {
+        final String[] nombres = new String[1];
 
+        DatabaseReference dbrf = FirebaseDatabase.getInstance().getReference().child("usuarios").child(correo);
+
+        dbrf.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                comunidades.clear();
+                nombres[0] = dataSnapshot.child("comunidades").getValue(String.class);
+                String[] com = nombres[0].split(";");
+                for (int i = 0; i < com.length; i++) {
+                    comunidades.add(com[i]);
+                }
+                if(comunidades.contains(cmp)){
+                    createSimpleDialog();
+                }else{
+                    añadirDialogo(cmp);
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+    public void createSimpleDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(vista.getContext());
+
+        builder.setTitle(vista.getResources().getString(R.string.AñadirC))
+                .setMessage(vista.getResources().getString(R.string.pertenece))
+                .setPositiveButton(vista.getResources().getString(R.string.acep),
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+
+         builder.create().show();
+    }
 }

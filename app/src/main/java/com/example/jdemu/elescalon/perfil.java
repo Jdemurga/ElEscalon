@@ -381,7 +381,7 @@ public class perfil extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 comunidades.clear();
                 nombres[0] = dataSnapshot.child("comunidades").getValue(String.class);
-                String[] com = nombres[0].split(",");
+                String[] com = nombres[0].split(";");
                 for (int i = 0; i < com.length; i++) {
                     comunidades.add(com[i]);
                 }

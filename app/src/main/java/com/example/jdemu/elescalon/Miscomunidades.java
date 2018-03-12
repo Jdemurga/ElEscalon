@@ -123,7 +123,7 @@ public class Miscomunidades extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 comunidades.clear();
                 nombres[0] = dataSnapshot.child("comunidades").getValue(String.class);
-                String[] com = nombres[0].split(",");
+                String[] com = nombres[0].split(";");
                 for (int i = 0; i < com.length; i++) {
                     comunidades.add(com[i]);
                 }
@@ -146,19 +146,20 @@ public class Miscomunidades extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 nombres[0] = dataSnapshot.child("comunidades").getValue(String.class);
-                String[] largo = nombres[0].split(",");
+                String[] largo = nombres[0].split(";");
                 DatabaseReference dbf = FirebaseDatabase.getInstance().getReference().child("usuarios").child(correo);
                 String dato = "";
                 for (int i = 0; i < largo.length; i++) {
                     if (!largo[i].equals(borrar)) {
                         if (!dato.equals("")) {
-                            dato += "," + largo[i];
+                            dato += ";" + largo[i];
                         } else {
                             dato += largo[i];
                         }
                     }
                 }
                 dbf.child("comunidades").setValue(dato);
+
             }
 
 
