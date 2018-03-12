@@ -188,7 +188,7 @@ public class Miscomunidades extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setTitle(vista.getResources().getString(R.string.Borrarc))
-                .setMessage(vista.getResources().getString(R.string.Borrarcm) + comunidad + "?")
+                .setMessage(vista.getResources().getString(R.string.Borrarcm)+"\n" + comunidad )
                 .setPositiveButton(vista.getResources().getString(R.string.acep),
                         new DialogInterface.OnClickListener() {
                             @Override

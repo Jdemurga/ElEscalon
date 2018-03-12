@@ -43,8 +43,19 @@
     <string name="compmail">Compruebe el email</string>
     <string name="valore">Valore a su vecino</string>
     <string name="Borrarc">Borrar comunidad</string>
-    <string name="Borrarcm">"¿Desea borrar la comunidad "</string>
+    <string name="Borrarcm">"¿Desea borrar esta comunidad? "</string>
     <string name="Borrarmf">¿Desea borrar su mensaje del foro?</string>
     <string name="Borrar">Borrar</string>
     <string name="Años">" años"</string>
+    <string name="RegExito">Se ha registrado con exito</string>
+    <string name="RegFallo">No se ha podido registrar</string>
+    <string name="compcamp">Compruebe que los campos no esten vacios</string>
+    <string name="LogFallo">Usuario o contraseña incorrectos</string>
+    <string name="AñadirC">Añadir comunidad</string>
+    <string name="DesAñadc">¿Desea añadir  esta comunidad?</string>
+    <string name="NuevaCom">Crear nueva comunidad</string>
+    <string name="NuevaMen">Nuevo mensaje</string>
+    <string name="Camara">Cámara</string>
+    <string name="galeria">Galería</string>
+    <string name="Opcion">Elija una opción</string>
 </resources>

@@ -107,6 +107,7 @@ public class login extends Fragment {
                     nombre.setText("");
                     contra.setText("");
                 } else {
+                    Toast.makeText(vista.getContext(), vista.getResources().getString(R.string.LogFallo), Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                     uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Toast.makeText(getApplicationContext(), "Se ha registrado con exito", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.RegExito), Toast.LENGTH_SHORT).show();
                             pLogin();
                         }
 
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
                 } else {
                     FirebaseAuthException e = (FirebaseAuthException) task.getException();
-                    Toast.makeText(getApplicationContext(), "No se ha podido registrar", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.RegFallo), Toast.LENGTH_SHORT).show();
                 }
             }
         });

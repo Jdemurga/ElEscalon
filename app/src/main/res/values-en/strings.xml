@@ -47,4 +47,15 @@
     <string name="Borrarmf">"Do you want to delete your message from the forum? "</string>
     <string name="Borrar">Delete</string>
     <string name="Años">" years"</string>
+    <string name="compcamp">"Check that the fields are not empty "</string>
+    <string name="RegExito">"It has been successfully registered "</string>
+    <string name="RegFallo">"Unable to register "</string>
+    <string name="LogFallo">"Incorrect username or password "</string>
+    <string name="AñadirC">Add community</string>
+    <string name="DesAñadc">Do you want to add this community?</string>
+    <string name="NuevaCom">Create new community</string>
+    <string name="NuevaMen">New message</string>
+    <string name="Camara">Camera</string>
+    <string name="galeria">Gallery</string>
+    <string name="Opcion">"Choose an option "</string>
 </resources>

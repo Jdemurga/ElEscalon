@@ -127,7 +127,7 @@ public class listaChat extends Fragment {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
                     builder.setTitle(vista.getResources().getString(R.string.Borrarm))
-                            .setMessage(vista.getResources().getString(R.string.Borrarcv)+u.getCorreo()+"?")
+                            .setMessage(vista.getResources().getString(R.string.Borrarcv)+u.getNombre()+"?")
                             .setPositiveButton(vista.getResources().getString(R.string.acep),
                                     new DialogInterface.OnClickListener() {
                                         @Override

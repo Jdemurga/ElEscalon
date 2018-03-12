@@ -265,9 +265,9 @@ public class perfil extends Fragment {
     public void createSingleListDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         final CharSequence[] items = new CharSequence[2];
-        items[0] = "Cámara";
-        items[1] = "Galería";
-        builder.setTitle("Elija una opción")
+        items[0] = vista.getResources().getString(R.string.Camara);
+        items[1] =  vista.getResources().getString(R.string.galeria);
+        builder.setTitle( vista.getResources().getString(R.string.Opcion))
                 .setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

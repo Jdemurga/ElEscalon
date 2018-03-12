@@ -175,16 +175,15 @@ public class foroMns extends Fragment {
         final EditText edt2 = (EditText) dialogView.findViewById(R.id.edit4);
 
 
-        dialogBuilder.setTitle("Nuevo mensaje");
-        dialogBuilder.setMessage("Introduzca los datos");
-        dialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+        dialogBuilder.setTitle(vista.getResources().getString(R.string.NuevaMen));
+        dialogBuilder.setPositiveButton(vista.getResources().getString(R.string.acep), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 if (!(String.valueOf(edt.getText()).equals("") || String.valueOf(edt2.getText()).equals(""))) {
                     subirCom(comuni, String.valueOf(edt.getText()), String.valueOf(edt2.getText()));
                 }
             }
         });
-        dialogBuilder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+        dialogBuilder.setNegativeButton(vista.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 //pass
             }

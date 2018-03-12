@@ -118,8 +118,7 @@ public class añadirComunidad extends Fragment {
         final EditText edt = (EditText) dialogView.findViewById(R.id.edit1);
 
 
-        dialogBuilder.setTitle("Nuevo comunidad");
-        dialogBuilder.setMessage("Introduzca los datos");
+        dialogBuilder.setTitle(vista.getResources().getString(R.string.NuevaCom));
         dialogBuilder.setPositiveButton(vista.getResources().getString(R.string.acep), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 if (!(String.valueOf(edt.getText()).equals(""))) {
@@ -225,8 +224,8 @@ public class añadirComunidad extends Fragment {
     public void añadirDialogo(final String comunidad) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder.setTitle("Añadir comunidad")
-                .setMessage("¿Desea añadir la comunidad "+comunidad+"?")
+        builder.setTitle(vista.getResources().getString(R.string.AñadirC))
+                .setMessage(vista.getResources().getString(R.string.DesAñadc)+"\n"+comunidad)
                 .setPositiveButton(vista.getResources().getString(R.string.acep),
                         new DialogInterface.OnClickListener() {
                             @Override
