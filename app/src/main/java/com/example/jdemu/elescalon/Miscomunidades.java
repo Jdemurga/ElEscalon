@@ -35,7 +35,7 @@ import java.util.ArrayList;
 public class Miscomunidades extends Fragment {
     View vista;
     ListView lv;
-    ImageView borrar, buscar;
+    ImageView borrar;
     EditText texto;
     ArrayAdapter<String> adapter;
     ArrayList<String> comunidades;
@@ -55,7 +55,6 @@ public class Miscomunidades extends Fragment {
             borrar = (ImageView) vista.findViewById(R.id.cancel);
             borrar.setEnabled(false);
             borrar.setVisibility(View.INVISIBLE);
-            buscar = (ImageView) vista.findViewById(R.id.lupa);
             b = getArguments();
             correo = b.getString("correo");
             texto = (EditText) vista.findViewById(R.id.txtBus);
