@@ -1,4 +1,4 @@
-package com.example.jdemu.elescalon;
+package com.elescalon.jdemu.elescalon;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -6,20 +6,8 @@ import android.app.FragmentTransaction;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
-
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.ByteArrayOutputStream;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class chatear extends AppCompatActivity {
     FragmentManager fm = getFragmentManager();

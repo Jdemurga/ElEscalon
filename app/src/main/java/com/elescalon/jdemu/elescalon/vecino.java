@@ -1,4 +1,4 @@
-package com.example.jdemu.elescalon;
+package com.elescalon.jdemu.elescalon;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -8,12 +8,9 @@ import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.InputType;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -31,9 +28,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringReader;
 import java.text.DecimalFormat;
-import java.util.Iterator;
 
 public class vecino extends AppCompatActivity {
     ImageView imagen;

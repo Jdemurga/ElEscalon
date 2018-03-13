@@ -1,4 +1,4 @@
-package com.example.jdemu.elescalon;
+package com.elescalon.jdemu.elescalon;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 public class iniComunidad extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.jdemu.elescalon;
+package com.elescalon.jdemu.elescalon;
 
 import android.app.AlertDialog;
 import android.app.Fragment;

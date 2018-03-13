@@ -1,8 +1,6 @@
-package com.example.jdemu.elescalon;
+package com.elescalon.jdemu.elescalon;
 
-import android.app.Fragment;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 
 /**
  * Created by jdemu on 18/01/2018.

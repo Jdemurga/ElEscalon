@@ -1,4 +1,4 @@
-package com.example.jdemu.elescalon;
+package com.elescalon.jdemu.elescalon;
 
 import android.app.Activity;
 import android.content.Context;
