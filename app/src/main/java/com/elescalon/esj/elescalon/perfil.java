@@ -1,4 +1,4 @@
-package com.elescalon.jdemu.elescalon;
+package com.elescalon.esj.elescalon;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -53,7 +53,7 @@ import javax.crypto.spec.SecretKeySpec;
 import static android.app.Activity.RESULT_OK;
 
 /**
- * Created by jdemu on 16/01/2018.
+ * Created by esj on 16/01/2018.
  */
 
 public class perfil extends Fragment {
@@ -384,6 +384,9 @@ public class perfil extends Fragment {
                 String[] com = nombres[0].split(";");
                 for (int i = 0; i < com.length; i++) {
                     comunidades.add(com[i]);
+                }
+                if(comunidades.get(0).equals("")){
+                    comunidades.set(0,vista.getResources().getString(R.string.nopertenece));
                 }
                 ArrayAdapter adapter = new ArrayAdapter(vista.getContext(), android.R.layout.simple_list_item_1, comunidades);
                 comunidad.setAdapter(adapter);

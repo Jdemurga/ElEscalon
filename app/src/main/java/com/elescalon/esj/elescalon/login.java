@@ -1,4 +1,4 @@
-package com.elescalon.jdemu.elescalon;
+package com.elescalon.esj.elescalon;
 
 import android.app.Fragment;
 import android.graphics.Typeface;
@@ -22,7 +22,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
- * Created by jdemu on 15/01/2018.
+ * Created by esj on 15/01/2018.
  */
 
 public class login extends Fragment {

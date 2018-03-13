@@ -58,6 +58,6 @@
     <string name="galeria">Galería</string>
     <string name="Opcion">Elija una opción</string>
     <string name="pertenece">Ya pertenece a esta comunidad</string>
-
+    <string name="nopertenece">Sin comunidad</string>
 
 </resources>

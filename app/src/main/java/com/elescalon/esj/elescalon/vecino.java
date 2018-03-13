@@ -1,4 +1,4 @@
-package com.elescalon.jdemu.elescalon;
+package com.elescalon.esj.elescalon;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;

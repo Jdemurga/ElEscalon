@@ -1,4 +1,4 @@
-package com.elescalon.jdemu.elescalon;
+package com.elescalon.esj.elescalon;
 
 import android.app.Fragment;
 import android.app.FragmentManager;

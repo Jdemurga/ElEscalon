@@ -1,4 +1,4 @@
-package com.elescalon.jdemu.elescalon;
+package com.elescalon.esj.elescalon;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -47,7 +47,7 @@ import java.util.Map;
 import static java.lang.Thread.sleep;
 
 /**
- * Created by jdemu on 18/01/2018.
+ * Created by esj on 18/01/2018.
  */
 
 public class foroMns extends Fragment {

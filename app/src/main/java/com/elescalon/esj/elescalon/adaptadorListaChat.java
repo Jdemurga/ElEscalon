@@ -1,4 +1,4 @@
-package com.elescalon.jdemu.elescalon;
+package com.elescalon.esj.elescalon;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,14 +12,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by jdemu on 12/02/2018.
+ * Created by esj on 19/02/2018.
  */
 
-public class adaptadorParticipantes extends BaseAdapter {
+public class adaptadorListaChat extends BaseAdapter {
     protected Activity activity;
     protected ArrayList<Usuario> items;
 
-    public adaptadorParticipantes(Activity activity, ArrayList<Usuario> items) {
+    public adaptadorListaChat(Activity activity, ArrayList<Usuario> items) {
         this.activity = activity;
         this.items = items;
     }
@@ -45,16 +45,16 @@ public class adaptadorParticipantes extends BaseAdapter {
         //Asociamos el layout de la lista que hemos creado
         if (convertView == null) {
             LayoutInflater inf = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = inf.inflate(R.layout.participantesitem, null);
+            v = inf.inflate(R.layout.itemlistachat, null);
         }
 
         // Creamos un objeto directivo
         Usuario dir = items.get(position);
         //Rellenamos la fotografía
-        ImageView foto = (ImageView) v.findViewById(R.id.fotoLista);
+        ImageView foto = (ImageView) v.findViewById(R.id.foto4);
         foto.setImageBitmap(dir.getFoto());
         //Rellenamos el nombre
-        TextView name = (TextView) v.findViewById(R.id.NombreLista);
+        TextView name = (TextView) v.findViewById(R.id.nombreChat);
         name.setText(dir.getNombre());
         //Rellenamos el cargo
 

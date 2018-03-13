@@ -1,4 +1,4 @@
-package com.elescalon.jdemu.elescalon;
+package com.elescalon.esj.elescalon;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * Created by jdemu on 16/01/2018.
+ * Created by esj on 16/01/2018.
  */
 
 public class añadirComunidad extends Fragment {

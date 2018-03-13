@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.elescalon.jdemu.elescalon">
+    package="com.elescalon.esj.elescalon">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -14,22 +14,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.elescalon.jdemu.elescalon.MainActivity"
+            android:name="com.elescalon.esj.elescalon.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.elescalon.jdemu.elescalon.inicio"
+            android:name="com.elescalon.esj.elescalon.inicio"
             android:label="@string/title_activity_inicio"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.elescalon.jdemu.elescalon.iniComunidad"
+            android:name="com.elescalon.esj.elescalon.iniComunidad"
             android:label="@string/title_activity_ini_comunidad"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.elescalon.jdemu.elescalon.Splash"
+            android:name="com.elescalon.esj.elescalon.Splash"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
@@ -39,12 +39,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.elescalon.jdemu.elescalon.vecino"
+            android:name="com.elescalon.esj.elescalon.vecino"
             android:label="@string/title_activity_perfil_vecino"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.elescalon.jdemu.elescalon.chatear"
+            android:name="com.elescalon.esj.elescalon.chatear"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"
             ></activity>

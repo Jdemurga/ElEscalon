@@ -1,4 +1,4 @@
-package com.elescalon.jdemu.elescalon;
+package com.elescalon.esj.elescalon;
 
 import android.app.Fragment;
 import android.graphics.Typeface;
@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 /**
- * Created by jdemu on 16/01/2018.
+ * Created by esj on 16/01/2018.
  */
 
 public class registro extends Fragment {

@@ -1,4 +1,4 @@
-package com.elescalon.jdemu.elescalon;
+package com.elescalon.esj.elescalon;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
@@ -31,7 +31,7 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by jdemu on 19/02/2018.
+ * Created by esj on 19/02/2018.
  */
 
 public class chat extends Fragment {

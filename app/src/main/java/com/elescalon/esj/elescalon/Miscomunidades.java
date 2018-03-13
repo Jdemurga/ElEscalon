@@ -1,4 +1,4 @@
-package com.elescalon.jdemu.elescalon;
+package com.elescalon.esj.elescalon;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,7 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 /**
- * Created by jdemu on 16/01/2018.
+ * Created by esj on 16/01/2018.
  */
 
 public class Miscomunidades extends Fragment {
@@ -123,8 +124,13 @@ public class Miscomunidades extends Fragment {
                 for (int i = 0; i < com.length; i++) {
                     comunidades.add(com[i]);
                 }
+                if(comunidades.get(0).equals("")){
+                    comunidades.clear();
+                    Toast.makeText(vista.getContext(), vista.getResources().getString(R.string.nopertenece), Toast.LENGTH_SHORT).show();
+                }
                 adapter = new ArrayAdapter(vista.getContext(), android.R.layout.simple_list_item_1, comunidades);
                 lv.setAdapter(adapter);
+
             }
 
             @Override

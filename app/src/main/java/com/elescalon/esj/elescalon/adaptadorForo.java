@@ -1,4 +1,4 @@
-package com.elescalon.jdemu.elescalon;
+package com.elescalon.esj.elescalon;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,17 +12,18 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by jdemu on 19/02/2018.
+ * Created by esj on 18/01/2018.
  */
 
-public class adaptadorListaChat extends BaseAdapter {
+public class adaptadorForo extends BaseAdapter {
     protected Activity activity;
-    protected ArrayList<Usuario> items;
+    protected ArrayList<Mensaje> items;
 
-    public adaptadorListaChat(Activity activity, ArrayList<Usuario> items) {
+    public adaptadorForo(Activity activity, ArrayList<Mensaje> items) {
         this.activity = activity;
         this.items = items;
     }
+
     @Override
     public int getCount() {
         return items.size();
@@ -43,24 +44,26 @@ public class adaptadorListaChat extends BaseAdapter {
         View v = convertView;
 
         //Asociamos el layout de la lista que hemos creado
-        if (convertView == null) {
+        if(convertView == null){
             LayoutInflater inf = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = inf.inflate(R.layout.itemlistachat, null);
+            v = inf.inflate(R.layout.itemlista, null);
         }
 
         // Creamos un objeto directivo
-        Usuario dir = items.get(position);
+        Mensaje dir = items.get(position);
         //Rellenamos la fotografía
-        ImageView foto = (ImageView) v.findViewById(R.id.foto4);
+        ImageView foto = (ImageView) v.findViewById(R.id.foto);
         foto.setImageBitmap(dir.getFoto());
         //Rellenamos el nombre
-        TextView name = (TextView) v.findViewById(R.id.nombreChat);
-        name.setText(dir.getNombre());
+        TextView titulo = (TextView) v.findViewById(R.id.Titulo);
+        titulo.setText(dir.getTitulo());
         //Rellenamos el cargo
-
+        TextView msm = (TextView) v.findViewById(R.id.msm);
+        msm.setText(dir.getMSM());
 
         // Retornamos la vista
         return v;
     }
+
 
 }

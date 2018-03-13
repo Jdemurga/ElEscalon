@@ -59,4 +59,5 @@
     <string name="galeria">Gallery</string>
     <string name="Opcion">"Choose an option "</string>
     <string name="pertenece">"Already belongs to this community "</string>
+    <string name="nopertenece">No community</string>
 </resources>
